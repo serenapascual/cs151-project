@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -77,11 +78,13 @@ public class MainView {
 
 	private void drawMonth(JPanel monthPanel) {
 		monthLabel.setText(new SimpleDateFormat("MMMM yyyy").format(cal.getTime()));
+		monthLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 
 		//Add Week Labels at top of Month View
 		String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 		for (int i = 0; i<7; i++) {
 			JLabel day = new JLabel(daysOfWeek[i], SwingConstants.CENTER); 
+			day.setFont(new Font("Tahoma", Font.BOLD, 18));
 			monthPanel.add(day);
 		}
 
@@ -122,6 +125,7 @@ public class MainView {
 				if (dayNumber == cal.get(Calendar.DAY_OF_MONTH)) {
 					day.setBorder(BorderFactory.createLineBorder(Color.black));
 				}
+				day.setFont(new Font("Tahoma", Font.BOLD, 20));
 				monthPanel.add(day);
 			}
 		}
