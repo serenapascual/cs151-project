@@ -1,7 +1,12 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EventModel {
 	private ArrayList<event> events = new ArrayList<>();
@@ -17,6 +22,11 @@ public class EventModel {
 		view.repaint();
 	}
 	
+	public void setToday(int day, int month) {
+		cal.set(cal.get(Calendar.YEAR), month, day);
+		view.repaint();
+	}
+	
 	public void previousDay() {
 		cal.add(Calendar.DAY_OF_MONTH, -1);
 		view.repaint();
@@ -24,6 +34,16 @@ public class EventModel {
 	
 	public void nextDay() {
 		cal.add(Calendar.DAY_OF_MONTH, 1);
+		view.repaint();
+	}
+	
+	public void nextMonth() {
+		cal.add(Calendar.MONTH, 1);
+		view.repaint();
+	}
+	
+	public void previousMonth() {
+		cal.add(Calendar.MONTH, -1);
 		view.repaint();
 	}
 	
@@ -45,4 +65,35 @@ public class EventModel {
 		return events;
 	}
 	
+	public void quit() {
+		load load = new load();
+		load.saveEvent(events);
+	}
+
+	public void populateEvents(String values) {
+		String[] val = values.split("-");
+		SimpleDateFormat sf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		Date startDate = null;
+		try {
+			startDate = sf.parse(val[1]);
+		} catch (ParseException ex) {
+			Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		Date endDate = null;
+		try {
+			endDate = sf.parse(val[2]);
+		} catch (ParseException ex) {
+			Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		Calendar startCal = new GregorianCalendar();
+        startCal.setTime(startDate);
+        Calendar endCal = new GregorianCalendar();
+        endCal.setTime(endDate);
+        
+        event e = new event(val[0], (GregorianCalendar)startCal, (GregorianCalendar) endCal);
+		events.add(e);
+
+		//System.out.println(events);
+	}
 }
