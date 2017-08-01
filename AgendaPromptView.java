@@ -50,10 +50,8 @@ public class AgendaPromptView {
 		saveButton.setForeground(Color.WHITE);
 		saveButton.setFont(new Font("Tahoma", Font.BOLD, 14));
 		saveButton.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				frame.dispose();
 			}
 		
 		});

@@ -61,6 +61,10 @@ public class EventModel {
 		this.view = view;
 	}
 	
+	public MainView getView() {
+		return this.view;
+	}
+	
 	public ArrayList<Event> getEvents() {
 		return events;
 	}
@@ -77,13 +81,13 @@ public class EventModel {
 		try {
 			startDate = sf.parse(val[1]);
 		} catch (ParseException ex) {
-			Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(CreatePromptView.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		Date endDate = null;
 		try {
 			endDate = sf.parse(val[2]);
 		} catch (ParseException ex) {
-			Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(CreatePromptView.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
 		Calendar startCal = new GregorianCalendar();

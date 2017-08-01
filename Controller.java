@@ -57,7 +57,7 @@ public class Controller extends JPanel{
 		create.setFont(new Font("Tahoma", Font.BOLD, 14));
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CreateEventView view = new CreateEventView(model);
+				CreatePromptView view = new CreatePromptView(model);
 			}
 		});
 
@@ -150,27 +150,46 @@ public class Controller extends JPanel{
 			}
 		});
 		
-		
 		day.setFocusable(false);
 		day.setBackground(new Color(48, 48, 48));
 		day.setForeground(Color.WHITE);
 		day.setFont(new Font("Tahoma", Font.BOLD, 14));
+		day.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.getView().drawDayEvents();
+			}
+		});
 		
 		week.setFocusable(false);
 		week.setBackground(new Color(48, 48, 48));
 		week.setForeground(Color.WHITE);
 		week.setFont(new Font("Tahoma", Font.BOLD, 14));
+		week.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.getView().drawWeekEvents();
+			}
+		});
 		
 		
 		month.setFocusable(false);
 		month.setBackground(new Color(48, 48, 48));
 		month.setForeground(Color.WHITE);
 		month.setFont(new Font("Tahoma", Font.BOLD, 14));
+		month.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.getView().drawMonthEvents();
+			}
+		});
 		
 		agenda.setFocusable(false);
 		agenda.setBackground(new Color(48, 48, 48));
 		agenda.setForeground(Color.WHITE);
 		agenda.setFont(new Font("Tahoma", Font.BOLD, 14));
+		agenda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AgendaPromptView view = new AgendaPromptView(model);
+			}
+		});
 
 		upper.add(today);
 		upper.add(create);

@@ -17,8 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class CreateEventView {
-	public CreateEventView(final EventModel model) {
+public class CreatePromptView {
+	public CreatePromptView(final EventModel model) {
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 		Calendar cal = model.getCal();
@@ -65,13 +65,13 @@ public class CreateEventView {
 				try {
 					startDate = sf.parse(date+start);
 				} catch (ParseException ex) {
-					Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+					Logger.getLogger(CreatePromptView.class.getName()).log(Level.SEVERE, null, ex);
 				}
 				Date endDate = null;
 				try {
 					endDate = sf.parse(date+end);
 				} catch (ParseException ex) {
-					Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+					Logger.getLogger(CreatePromptView.class.getName()).log(Level.SEVERE, null, ex);
 				}
 				
 				Calendar startCal = new GregorianCalendar();
