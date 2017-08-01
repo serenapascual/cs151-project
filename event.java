@@ -35,6 +35,6 @@ public class event implements Comparable<event>{
 	}
 
 	public String toString() {
-		return title + start.toString() + end.toString();
+		return title +"-"+ start.getTime() +"-"+ end.getTime();
 	}
 }
