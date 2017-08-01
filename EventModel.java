@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EventModel {
-	private ArrayList<event> events = new ArrayList<>();
+	private ArrayList<Event> events = new ArrayList<>();
 	private Calendar cal;
 	private MainView view;
 	
@@ -51,7 +51,7 @@ public class EventModel {
 		return cal;
 	}
 	
-	public void addEvent(event e) {
+	public void addEvent(Event e) {
 		events.add(e);
 		Collections.sort(events);
 		view.repaint();
@@ -61,12 +61,12 @@ public class EventModel {
 		this.view = view;
 	}
 	
-	public ArrayList<event> getEvents() {
+	public ArrayList<Event> getEvents() {
 		return events;
 	}
 	
 	public void quit() {
-		load load = new load();
+		Load load = new Load();
 		load.saveEvent(events);
 	}
 
@@ -91,7 +91,7 @@ public class EventModel {
         Calendar endCal = new GregorianCalendar();
         endCal.setTime(endDate);
         
-        event e = new event(val[0], (GregorianCalendar)startCal, (GregorianCalendar) endCal);
+        Event e = new Event(val[0], (GregorianCalendar)startCal, (GregorianCalendar) endCal);
 		events.add(e);
 
 		//System.out.println(events);

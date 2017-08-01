@@ -79,7 +79,7 @@ public class CreateEventView {
                 Calendar endCal = new GregorianCalendar();
                 endCal.setTime(endDate);
                 
-                event eventNew = new event(title, (GregorianCalendar)startCal, (GregorianCalendar) endCal);
+                Event eventNew = new Event(title, (GregorianCalendar)startCal, (GregorianCalendar) endCal);
                 //System.out.println(eventNew.toString());
                 boolean conflict = false;
                 if(eventNew.getEnd().before(eventNew.getStart()) || eventNew.getStart().equals(eventNew.getEnd())) {
@@ -90,7 +90,7 @@ public class CreateEventView {
                         conflict = true;
                 }
                 
-                for(event events: model.getEvents()) {
+                for(Event events: model.getEvents()) {
                 	if(events.compareTo(eventNew) == 0) {
                 		JOptionPane.showMessageDialog(frame,
                                 "Times cannot overlap. Please ensure that start time is different from end time",
@@ -110,7 +110,7 @@ public class CreateEventView {
 		});
 		
 		titleField.selectAll();
-		panel.setLayout(new GridLayout(6, 2));
+		panel.setLayout(new GridLayout(5, 2));
 		panel.add(title);
 		panel.add(titleField);	
 		panel.add(date);

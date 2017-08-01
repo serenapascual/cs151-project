@@ -1,9 +1,4 @@
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -11,15 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneLayout;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import javax.swing.border.*;
 
 public class MainView {
 	private EventModel model;
@@ -37,7 +25,7 @@ public class MainView {
 		JFrame frame = new JFrame();
 
 		monthPanel = new JPanel();
-        monthPanel.setLayout(new GridLayout(0, 7, 10, 10));
+        monthPanel.setLayout(new GridLayout(0, 7, 0, 0));
 		JPanel monthWrap = new JPanel();
 		monthWrap.setLayout(new BorderLayout());
 		monthLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -89,7 +77,8 @@ public class MainView {
 		//Add Week Labels at top of Month View
 		String[] daysOfWeek = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 		for (int i = 0; i<7; i++) {
-			JLabel day = new JLabel(daysOfWeek[i], SwingConstants.CENTER); 
+			JLabel day = new JLabel(daysOfWeek[i], SwingConstants.CENTER);
+			day.setBorder(new CompoundBorder(day.getBorder(), new EmptyBorder(5, 5, 5, 5)));
 			day.setFont(new Font("Tahoma", Font.BOLD, 18));
 			if(i == 0 || i == 6) {
 				day.setForeground(Color.RED);
@@ -174,8 +163,8 @@ public class MainView {
 		dayPanel.add(timePanel, BorderLayout.WEST);
 		dayPanel.add(dayHolder, BorderLayout.CENTER);
 		dayPanel.add(dayLabel, BorderLayout.NORTH);
-		ArrayList<event> events = model.getEvents();
-		for (event e : events) {
+		ArrayList<Event> events = model.getEvents();
+		for (Event e : events) {
 			if (e.getStart().get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH) && (e.getStart().get(Calendar.MONTH) == cal.get(Calendar.MONTH)) 
 										&& (e.getStart().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) ) {
 

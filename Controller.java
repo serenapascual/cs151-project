@@ -1,7 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -20,14 +17,26 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Controller extends JPanel{
 
 	public Controller(final EventModel model){
-		JButton createButton = new JButton("CREATE");
+		setBackground(Color.white);
+		setLayout(new BorderLayout());
+		
+		JPanel upper = new JPanel();
+		JPanel lower = new JPanel();
+		upper.setBackground(Color.white);
+		lower.setBackground(Color.white);
+		
+		JButton today = new JButton("TODAY");
+		JButton create = new JButton("CREATE");
 		JButton previous = new JButton("<");
 		JButton next = new JButton(">");
 		JButton previousMonth = new JButton("<<");
 		JButton nextMonth = new JButton(">>");
 		JButton quit = new JButton("QUIT");
 		JButton load = new JButton("LOAD EVENTS");
-		JButton today = new JButton("TODAY");
+		JButton day = new JButton("DAY");
+		JButton week = new JButton("WEEK");
+		JButton month = new JButton("MONTH");
+		JButton agenda = new JButton("AGENDA");
 
 		today.setFocusable(false);
 		today.setBackground(new Color(239, 98, 95));
@@ -42,11 +51,11 @@ public class Controller extends JPanel{
 			}
 		});
 
-		createButton.setFocusable(false);
-		createButton.setBackground(new Color(239, 98, 95));
-		createButton.setForeground(Color.WHITE);
-		createButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		createButton.addActionListener(new ActionListener() {
+		create.setFocusable(false);
+		create.setBackground(new Color(239, 98, 95));
+		create.setForeground(Color.WHITE);
+		create.setFont(new Font("Tahoma", Font.BOLD, 14));
+		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CreateEventView view = new CreateEventView(model);
 			}
@@ -62,6 +71,7 @@ public class Controller extends JPanel{
 				model.previousDay();
 			}
 		});
+		
 		next.setFocusable(false);
 		next.setBackground(new Color(241,241,241));
 		next.setForeground(Color.BLACK);
@@ -72,7 +82,7 @@ public class Controller extends JPanel{
 				model.nextDay();
 			}
 		});
-
+		
 		previousMonth.setFocusable(false);
 		previousMonth.setBackground(new Color(241,241,241));
 		previousMonth.setForeground(Color.BLACK);
@@ -139,16 +149,45 @@ public class Controller extends JPanel{
 				}
 			}
 		});
+		
+		
+		day.setFocusable(false);
+		day.setBackground(new Color(48, 48, 48));
+		day.setForeground(Color.WHITE);
+		day.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		week.setFocusable(false);
+		week.setBackground(new Color(48, 48, 48));
+		week.setForeground(Color.WHITE);
+		week.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		
+		month.setFocusable(false);
+		month.setBackground(new Color(48, 48, 48));
+		month.setForeground(Color.WHITE);
+		month.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		agenda.setFocusable(false);
+		agenda.setBackground(new Color(48, 48, 48));
+		agenda.setForeground(Color.WHITE);
+		agenda.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		add(today);
-		add(createButton);
-		add(previousMonth);
-		add(previous);
-		add(next);
-		add(nextMonth);
-		setBackground(Color.white);
-		add(load);
-		add(quit);
+		upper.add(today);
+		upper.add(create);
+		upper.add(previousMonth);
+		upper.add(previous);
+		upper.add(next);
+		upper.add(nextMonth);
+		upper.add(load);
+		upper.add(create);
+		upper.add(quit);
+		lower.add(day);
+		lower.add(week);
+		lower.add(month);
+		lower.add(agenda);
+		
+		add(upper, BorderLayout.NORTH);
+		add(lower, BorderLayout.SOUTH);
 	}
 }
 

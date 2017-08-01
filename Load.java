@@ -8,14 +8,14 @@ import java.util.Scanner;
  * @author Himanshu Mehta
  *
  */
-public class load{
-	private static ArrayList<event> eventList = new ArrayList<event>();
+public class Load{
+	private static ArrayList<Event> eventList = new ArrayList<Event>();
 	static EventModel model = new EventModel();
 	
-	public load(final EventModel model) {
+	public Load(final EventModel model) {
 		this.model = model;
 	}
-	public load() {
+	public Load() {
 		
 	}
 
@@ -24,11 +24,19 @@ public class load{
 	 */
 	public static void loadEvent() {
 		Scanner s = null;
+		File f = new File("events.txt");
 		try {
-			s = new Scanner(new File("events.txt"));
+			s = new Scanner(f);
 		} catch (FileNotFoundException e) {
 			System.out.println("This is your first run! The file was not found");
-			e.printStackTrace();
+			try {
+				f.createNewFile();
+				System.out.println("A new file has been created");
+				s = new Scanner(f);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
 		}
 		ArrayList<String> list = new ArrayList<String>();
 		while (s.hasNextLine()) {
@@ -45,7 +53,7 @@ public class load{
 	 * @param event is an event which is saved to the text file
 	 *            
 	 */
-	public static void saveEvent(ArrayList<event> event) {
+	public static void saveEvent(ArrayList<Event> event) {
 		for (int i = 0; i < event.size(); i++) {
 			eventList.add(event.get(i));
 		}
@@ -65,7 +73,7 @@ public class load{
 		}
 		BufferedWriter bw = new BufferedWriter(fw);
 
-		for (event s : eventList) {
+		for (Event s : eventList) {
 			try {
 				bw.write(s.toString() + System.getProperty("line.separator"));
 			} catch (IOException e) {

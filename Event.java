@@ -1,12 +1,12 @@
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class event implements Comparable<event>{
+public class Event implements Comparable<Event>{
 	private String title;
 	private Calendar start;
 	private Calendar end;
 	
-	public event(String title, GregorianCalendar start, GregorianCalendar end) {
+	public Event(String title, GregorianCalendar start, GregorianCalendar end) {
 		this.title = title;
 		this.start = start;
 		this.end = end;
@@ -24,7 +24,7 @@ public class event implements Comparable<event>{
 		return end;
 	}
 	
-	public int compareTo(event e) {
+	public int compareTo(Event e) {
 		if(e.start.before(this.start) && e.end.before(this.start)) {
 			return 1;
 		}else if(e.start.after(this.end) && e.end.after(this.end)) {

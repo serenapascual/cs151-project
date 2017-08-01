@@ -6,7 +6,7 @@
 public class SimpleCalendar {
 	public static void main(String[] args) {
 		EventModel model = new EventModel();
-		load l = new load(model);
+		Load l = new Load(model);
 		l.loadEvent();
 		MainView view = new MainView(model);
 		model.setView(view);
