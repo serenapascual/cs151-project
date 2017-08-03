@@ -14,9 +14,6 @@ import javax.swing.JPanel;
 
 public class Controller extends JPanel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public Controller(final EventModel model){
@@ -24,9 +21,9 @@ public class Controller extends JPanel{
 		setLayout(new BorderLayout());
 
 		JPanel upper = new JPanel();
-		JPanel lower = new JPanel();
+		//	JPanel lower = new JPanel();
 		upper.setBackground(Color.white);
-		lower.setBackground(Color.white);
+		//	lower.setBackground(Color.white);
 
 		JButton today = new JButton("TODAY");
 		JButton create = new JButton("CREATE");
@@ -42,7 +39,8 @@ public class Controller extends JPanel{
 		JButton agenda = new JButton("AGENDA");
 		Calendar cal = Calendar.getInstance();
 
-
+		today.setOpaque(true);
+		today.setBorderPainted(false); // makes color bg show properly on Mac
 		today.setFocusable(false);
 		today.setBackground(new Color(239, 98, 95));
 		today.setForeground(Color.WHITE);
@@ -55,7 +53,9 @@ public class Controller extends JPanel{
 				model.setToday(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
 			}
 		});
-
+		
+		create.setOpaque(true);
+		create.setBorderPainted(false);
 		create.setFocusable(false);
 		create.setBackground(new Color(239, 98, 95));
 		create.setForeground(Color.WHITE);
@@ -65,7 +65,9 @@ public class Controller extends JPanel{
 				CreatePromptView view = new CreatePromptView(model);
 			}
 		});
-
+		
+		previous.setOpaque(true);
+		previous.setBorderPainted(false);
 		previous.setFocusable(false);
 		previous.setBackground(new Color(241,241,241));
 		previous.setForeground(Color.BLACK);
@@ -77,6 +79,8 @@ public class Controller extends JPanel{
 			}
 		});
 
+		next.setOpaque(true);
+		next.setBorderPainted(false);
 		next.setFocusable(false);
 		next.setBackground(new Color(241,241,241));
 		next.setForeground(Color.BLACK);
@@ -110,6 +114,8 @@ public class Controller extends JPanel{
 		//			}
 		//		});
 
+		quit.setOpaque(true);
+		quit.setBorderPainted(false);
 		quit.setFocusable(false);
 		quit.setBackground(new Color(68, 133, 244));
 		quit.setForeground(Color.WHITE);
@@ -122,6 +128,8 @@ public class Controller extends JPanel{
 			}
 		});
 
+		load.setOpaque(true);
+		load.setBorderPainted(false);
 		load.setFocusable(false);
 		load.setBackground(new Color(239, 98, 95));
 		load.setForeground(Color.WHITE);
@@ -149,6 +157,8 @@ public class Controller extends JPanel{
 			}
 		});
 
+		day.setOpaque(true);
+		day.setBorderPainted(false);
 		day.setFocusable(false);
 		day.setBackground(new Color(48, 48, 48));
 		day.setForeground(Color.WHITE);
@@ -159,6 +169,8 @@ public class Controller extends JPanel{
 			}
 		});
 
+		week.setOpaque(true);
+		week.setBorderPainted(false);
 		week.setFocusable(false);
 		week.setBackground(new Color(48, 48, 48));
 		week.setForeground(Color.WHITE);
@@ -169,7 +181,8 @@ public class Controller extends JPanel{
 			}
 		});
 
-
+		month.setOpaque(true);
+		month.setBorderPainted(false);
 		month.setFocusable(false);
 		month.setBackground(new Color(48, 48, 48));
 		month.setForeground(Color.WHITE);
@@ -180,6 +193,8 @@ public class Controller extends JPanel{
 			}
 		});
 
+		agenda.setOpaque(true);
+		agenda.setBorderPainted(false);
 		agenda.setFocusable(false);
 		agenda.setBackground(new Color(48, 48, 48));
 		agenda.setForeground(Color.WHITE);
@@ -194,21 +209,23 @@ public class Controller extends JPanel{
 		//		upper.add(previousMonth);
 		upper.add(previous);
 		upper.add(next);	
-		upper.add(Box.createRigidArea(new Dimension(350,0)));
+		//	upper.add(Box.createRigidArea(new Dimension(350,0)));
 
 		upper.add(create);
 		//		upper.add(nextMonth);
 		upper.add(load);
 		//	upper.add(create);
+		
+		upper.add(day);
+		upper.add(week);
+		upper.add(month);
+		upper.add(agenda);
+		
 		upper.add(quit);
 		upper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		lower.add(day);
-		lower.add(week);
-		lower.add(month);
-		lower.add(agenda);
 
 		add(upper, BorderLayout.NORTH);
-		add(lower, BorderLayout.SOUTH);
+		//	add(lower, BorderLayout.SOUTH);
 	}
 }
 

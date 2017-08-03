@@ -19,22 +19,37 @@ public class AgendaPromptView {
 		JLabel startDate = new JLabel("Start date:");
 		
 		JTextField startDateField = new JTextField();
-		Calendar firstEventDate = model.getEvents().get(0).getStart();
-		String firstEventDateString = firstEventDate.get(Calendar.MONTH) + "/" + firstEventDate.get(Calendar.DAY_OF_MONTH)
+		String firstEventDateString = "";
+		try {
+			Calendar firstEventDate = model.getEvents().get(0).getStart();
+			firstEventDateString = firstEventDate.get(Calendar.MONTH) + "/" + firstEventDate.get(Calendar.DAY_OF_MONTH)
 			+ "/" + firstEventDate.get(Calendar.YEAR);
+		}
+		catch (IndexOutOfBoundsException e) {
+			firstEventDateString = model.getCal().get(Calendar.MONTH) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
+			+ "/" + model.getCal().get(Calendar.YEAR);
+		}
 		startDateField.setText(firstEventDateString);
-		
+
 		JLabel endDate = new JLabel("End date:");
-		
 		JTextField endDateField = new JTextField();
-		Calendar lastEventDate = model.getEvents().get(0).getStart();
-		String lastEventDateString = lastEventDate.get(Calendar.MONTH) + "/" + lastEventDate.get(Calendar.DAY_OF_MONTH)
+		String lastEventDateString = "";
+		try{
+			Calendar lastEventDate = model.getEvents().get(0).getStart();
+			lastEventDateString = lastEventDate.get(Calendar.MONTH) + "/" + lastEventDate.get(Calendar.DAY_OF_MONTH)
 			+ "/" + lastEventDate.get(Calendar.YEAR);
+		}
+		catch (IndexOutOfBoundsException e) {
+			lastEventDateString = model.getCal().get(Calendar.MONTH) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
+			+ "/" + model.getCal().get(Calendar.YEAR);
+		}
 		endDateField.setText(lastEventDateString);
 		
 		JButton saveButton = new JButton("Save");
 		JButton cancelButton = new JButton("Cancel");
 
+		cancelButton.setOpaque(true);
+		cancelButton.setBorderPainted(false);
 		cancelButton.setFocusable(false);
 		cancelButton.setBackground(new Color(236, 151, 31));
 		cancelButton.setForeground(Color.WHITE);
@@ -45,6 +60,8 @@ public class AgendaPromptView {
 			}
 		});
 
+		saveButton.setOpaque(true);
+		saveButton.setBorderPainted(false);
 		saveButton.setFocusable(false);
 		saveButton.setBackground(new Color(68, 157, 68));
 		saveButton.setForeground(Color.WHITE);
