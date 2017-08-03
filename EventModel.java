@@ -3,9 +3,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 
 public class EventModel {
-	private ArrayList<event> events = new ArrayList<>();
+	private ArrayList<Event> events = new ArrayList<>();
 	private Calendar cal;
 	private MainView view;
 
@@ -47,7 +52,7 @@ public class EventModel {
 		return cal;
 	}
 
-	public void addEvent(event e) {
+	public void addEvent(Event e) {
 		events.add(e);
 		Collections.sort(events);
 		view.repaint();
@@ -56,9 +61,18 @@ public class EventModel {
 	public void setView(MainView view) {
 		this.view = view;
 	}
+	
+	public MainView getView() {
+		return this.view;
+	}
 
-	public ArrayList<event> getEvents() {
+	public ArrayList<Event> getEvents() {
 		return events;
+	}
+	
+	public void quit() {
+		Load load = new Load();
+		load.saveEvent(events);
 	}
 
 	public void populateEvents(String values) {
@@ -76,7 +90,7 @@ public class EventModel {
 			int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 			for(int j = 1; j <= daysInMonth; j++) {
 				if(dayOfWeek.contains(Weekday(year, i, j))) {
-					event e = new event(description, year, i, j, startTime, endTime+"");
+					Event e = new Event(description, year, i, j, startTime, endTime+"");
 					events.add(e);
 				}
 			}

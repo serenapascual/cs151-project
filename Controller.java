@@ -1,6 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -8,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
+
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -20,19 +20,26 @@ public class Controller extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	public Controller(final EventModel model){
-		JPanel day = new JPanel();
-		JPanel views = new JPanel();
-		JPanel quitPanel = new JPanel();
-		JButton createButton = new JButton("CREATE");
+		setBackground(Color.white);
+		setLayout(new BorderLayout());
+
+		JPanel upper = new JPanel();
+		JPanel lower = new JPanel();
+		upper.setBackground(Color.white);
+		lower.setBackground(Color.white);
+
+		JButton today = new JButton("TODAY");
+		JButton create = new JButton("CREATE");
 		JButton previous = new JButton("<");
 		JButton next = new JButton(">");
+		//		JButton previousMonth = new JButton("<<");
+		//		JButton nextMonth = new JButton(">>");
 		JButton quit = new JButton("QUIT");
-		JButton load = new JButton("LOAD EVENTS");
-		JButton today = new JButton("TODAY");
-		JButton dayView = new JButton("Day");
-		JButton monthView = new JButton("Month");
-		JButton weekView = new JButton("Week");
-		JButton agenda = new JButton("Agenda");
+		JButton load = new JButton("LOAD EVENTS FROM FILE");
+		JButton day = new JButton("DAY");
+		JButton week = new JButton("WEEK");
+		JButton month = new JButton("MONTH");
+		JButton agenda = new JButton("AGENDA");
 		Calendar cal = Calendar.getInstance();
 
 
@@ -43,20 +50,19 @@ public class Controller extends JPanel{
 		today.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Calendar cal = new GregorianCalendar();
-				cal.getInstance();
 				//				System.out.println(cal.get(Calendar.DATE));
 				//				System.out.println(cal.get(Calendar.DAY_OF_MONTH));
 				model.setToday(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
 			}
 		});
 
-		createButton.setFocusable(false);
-		createButton.setBackground(new Color(239, 98, 95));
-		createButton.setForeground(Color.WHITE);
-		createButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		createButton.addActionListener(new ActionListener() {
+		create.setFocusable(false);
+		create.setBackground(new Color(239, 98, 95));
+		create.setForeground(Color.WHITE);
+		create.setFont(new Font("Tahoma", Font.BOLD, 14));
+		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CreateEventView view = new CreateEventView(model);
+				CreatePromptView view = new CreatePromptView(model);
 			}
 		});
 
@@ -70,6 +76,7 @@ public class Controller extends JPanel{
 				model.previousDay();
 			}
 		});
+
 		next.setFocusable(false);
 		next.setBackground(new Color(241,241,241));
 		next.setForeground(Color.BLACK);
@@ -81,6 +88,28 @@ public class Controller extends JPanel{
 			}
 		});
 
+		//		previousMonth.setFocusable(false);
+		//		previousMonth.setBackground(new Color(241,241,241));
+		//		previousMonth.setForeground(Color.BLACK);
+		//		previousMonth.setFont(new Font("Tahoma", Font.BOLD, 18));
+		//
+		//		previousMonth.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent arg0) {
+		//				model.previousMonth();
+		//			}
+		//		});
+		//
+		//		nextMonth.setFocusable(false);
+		//		nextMonth.setBackground(new Color(241,241,241));
+		//		nextMonth.setForeground(Color.BLACK);
+		//		nextMonth.setFont(new Font("Tahoma", Font.BOLD, 18));
+		//
+		//		nextMonth.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent arg0) {
+		//				model.nextMonth();
+		//			}
+		//		});
+
 		quit.setFocusable(false);
 		quit.setBackground(new Color(68, 133, 244));
 		quit.setForeground(Color.WHITE);
@@ -88,6 +117,7 @@ public class Controller extends JPanel{
 
 		quit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				model.quit();
 				System.exit(0);
 			}
 		});
@@ -118,23 +148,67 @@ public class Controller extends JPanel{
 				model.setToday(cal.get(Calendar.DATE),cal.get(Calendar.MONTH),cal.get(Calendar.YEAR));
 			}
 		});
-		
-		day.add(today, BorderLayout.EAST);
-		day.add(previous, BorderLayout.CENTER);
-		day.add(next, BorderLayout.WEST);
-		day.add(createButton, BorderLayout.WEST);
-		setBackground(Color.white);
-		day.setBackground(Color.white);
-		add(day, BorderLayout.EAST);
-		views.add(dayView, BorderLayout.EAST);
-		views.add(weekView, BorderLayout.CENTER);
-		views.add(monthView, BorderLayout.CENTER);
-		views.add(agenda, BorderLayout.WEST);
-		quitPanel.add(load, BorderLayout.CENTER);
-		quitPanel.add(quit, BorderLayout.WEST);
-		add(views, BorderLayout.CENTER);
-		add(load, BorderLayout.WEST);
-		add(quitPanel, BorderLayout.WEST);
+
+		day.setFocusable(false);
+		day.setBackground(new Color(48, 48, 48));
+		day.setForeground(Color.WHITE);
+		day.setFont(new Font("Tahoma", Font.BOLD, 14));
+		day.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.getView().drawDayEvents();
+			}
+		});
+
+		week.setFocusable(false);
+		week.setBackground(new Color(48, 48, 48));
+		week.setForeground(Color.WHITE);
+		week.setFont(new Font("Tahoma", Font.BOLD, 14));
+		week.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.getView().drawWeekEvents();
+			}
+		});
+
+
+		month.setFocusable(false);
+		month.setBackground(new Color(48, 48, 48));
+		month.setForeground(Color.WHITE);
+		month.setFont(new Font("Tahoma", Font.BOLD, 14));
+		month.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.getView().drawMonthEvents();
+			}
+		});
+
+		agenda.setFocusable(false);
+		agenda.setBackground(new Color(48, 48, 48));
+		agenda.setForeground(Color.WHITE);
+		agenda.setFont(new Font("Tahoma", Font.BOLD, 14));
+		agenda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AgendaPromptView view = new AgendaPromptView(model);
+			}
+		});
+
+		upper.add(today);
+		//		upper.add(previousMonth);
+		upper.add(previous);
+		upper.add(next);	
+		upper.add(Box.createRigidArea(new Dimension(350,0)));
+
+		upper.add(create);
+		//		upper.add(nextMonth);
+		upper.add(load);
+		//	upper.add(create);
+		upper.add(quit);
+		upper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		lower.add(day);
+		lower.add(week);
+		lower.add(month);
+		lower.add(agenda);
+
+		add(upper, BorderLayout.NORTH);
+		add(lower, BorderLayout.SOUTH);
 	}
 }
 

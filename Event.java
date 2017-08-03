@@ -3,10 +3,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class event implements Comparable<event>{
+public class Event implements Comparable<Event>{
 	private String title;
 	private int year;
 	private int month;
@@ -17,7 +15,7 @@ public class event implements Comparable<event>{
 	private Calendar end = new GregorianCalendar();
 	private String dayOfWeek;
 
-	public event(String title, int year, int month, int day, String startTime, String endTime) {
+	public Event(String title, int year, int month, int day, String startTime, String endTime) {
 		this.title = title;
 		this.year = year;
 		this.month = month;
@@ -36,13 +34,13 @@ public class event implements Comparable<event>{
 		try {
 			startDate = sf.parse(month+"/"+day+"/"+year+" "+startTime);
 		} catch (ParseException ex) {
-			Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println(ex.getMessage());
 		}
 		Date endDate = null;
 		try {
 			endDate = sf.parse(month+"/"+day+"/"+year+" "+endTime);
 		} catch (ParseException ex) {
-			Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println(ex.getMessage());
 		}
 		
 		start.setTime(startDate);
@@ -61,7 +59,7 @@ public class event implements Comparable<event>{
 		return end;
 	}
 
-	public int compareTo(event e) {
+	public int compareTo(Event e) {
 		if(e.start.before(this.start) && e.end.before(this.start)) {
 			return 1;
 		}else if(e.start.after(this.end) && e.end.after(this.end)) {
@@ -74,51 +72,4 @@ public class event implements Comparable<event>{
 	public String toString() {
 		return title +";"+ year +";"+ month +";"+ dayOfWeek +";"+ startTime +";"+ endTime ;
 	}
-
-//    public static Comparator<event> createComparatorByName()
-//    {
-//        return new Comparator<event>()
-//        {
-//            public int compare(event one, event two)
-//            {
-//                return one.compareTo(two);
-//            }
-//        };
-//    };
-//
-//	public int compareTo(event a) {
-//		 if (year > a.year)
-//         {
-//             return 1;
-//         }
-//         if (year < a.year)
-//         {
-//             return -1;
-//         }
-//         if (month > a.month)
-//         {
-//             return 1;
-//         }
-//         if (month < a.month)
-//         {
-//             return -1;
-//         }
-//         if (day > a.day)
-//         {
-//             return 1;
-//         }
-//         if (day < a.day)
-//         {
-//             return -1;
-//         }
-//         if (Integer.parseInt(startTime) > Integer.parseInt(a.startTime))
-//         {
-//             return 1;
-//         }
-//         if (Integer.parseInt(startTime) < Integer.parseInt(a.startTime))
-//         {
-//             return -1;
-//         }
-//         return 0;
-//	}
 }

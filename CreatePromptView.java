@@ -13,12 +13,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class CreateEventView {
-	public CreateEventView(final EventModel model) {
+public class CreatePromptView {
+	public CreatePromptView(final EventModel model) {
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 		Calendar cal = model.getCal();
-		SimpleDateFormat startTime = new SimpleDateFormat("hh:mm aa");
+		SimpleDateFormat startTime = new SimpleDateFormat("hh:mmaa");
 		Calendar endTime = new GregorianCalendar();
 		endTime.setTime(cal.getTime());
 		endTime.add(Calendar.MINUTE, 30);
@@ -62,7 +62,7 @@ public class CreateEventView {
 				int month = Integer.parseInt(dateArr[0]);
 //				System.out.println(day);
 //				System.out.println(month);
-                event eventNew = new event(title, year, month, day, start, end);
+                Event eventNew = new Event(title, year, month, day, start, end);
                 boolean conflict = false;
                 if(eventNew.getEnd().before(eventNew.getStart()) || eventNew.getStart().equals(eventNew.getEnd())) {
                 	JOptionPane.showMessageDialog(frame,
@@ -72,7 +72,7 @@ public class CreateEventView {
                         conflict = true;
                 }
                 
-                for(event events: model.getEvents()) {
+                for(Event events: model.getEvents()) {
                 	if(events.compareTo(eventNew) == 0) {
                 		JOptionPane.showMessageDialog(frame,
                                 "Times cannot overlap. Please ensure that start time is different from end time",
@@ -92,7 +92,7 @@ public class CreateEventView {
 		});
 		
 		titleField.selectAll();
-		panel.setLayout(new GridLayout(6, 2));
+		panel.setLayout(new GridLayout(5, 2));
 		panel.add(title);
 		panel.add(titleField);	
 		panel.add(date);

@@ -5,17 +5,17 @@ import java.util.Scanner;
  * This class saves the events to events.txt when program terminates, and also
  * loads the events from the text file.
  * 
- * @author Himanshu Mehta
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
  *
  */
-public class load{
-	private static ArrayList<event> eventList = new ArrayList<event>();
-	static EventModel model = new EventModel();
+public class Load{
+	private static ArrayList<Event> eventList = new ArrayList<Event>();
+	public static EventModel model = new EventModel();
 	
-	public load(final EventModel model) {
+	public Load(final EventModel model) {
 		this.model = model;
 	}
-	public load() {
+	public Load() {
 		
 	}
 
@@ -45,7 +45,7 @@ public class load{
 	 * @param event is an event which is saved to the text file
 	 *            
 	 */
-	public static void saveEvent(ArrayList<event> event) {
+	public static void saveEvent(ArrayList<Event> event) {
 		for (int i = 0; i < event.size(); i++) {
 			eventList.add(event.get(i));
 		}
@@ -65,7 +65,7 @@ public class load{
 		}
 		BufferedWriter bw = new BufferedWriter(fw);
 
-		for (event s : eventList) {
+		for (Event s : eventList) {
 			try {
 				bw.write(s.toString() + System.getProperty("line.separator"));
 			} catch (IOException e) {
