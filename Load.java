@@ -5,12 +5,12 @@ import java.util.Scanner;
  * This class saves the events to events.txt when program terminates, and also
  * loads the events from the text file.
  * 
- * @author Himanshu Mehta
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
  *
  */
 public class Load{
 	private static ArrayList<Event> eventList = new ArrayList<Event>();
-	static EventModel model = new EventModel();
+	public static EventModel model = new EventModel();
 	
 	public Load(final EventModel model) {
 		this.model = model;
@@ -24,19 +24,11 @@ public class Load{
 	 */
 	public static void loadEvent() {
 		Scanner s = null;
-		File f = new File("events.txt");
 		try {
-			s = new Scanner(f);
+			s = new Scanner(new File("input.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("This is your first run! The file was not found");
-			try {
-				f.createNewFile();
-				System.out.println("A new file has been created");
-				s = new Scanner(f);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			
+			e.printStackTrace();
 		}
 		ArrayList<String> list = new ArrayList<String>();
 		while (s.hasNextLine()) {

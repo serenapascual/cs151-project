@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -9,6 +11,11 @@ import java.util.GregorianCalendar;
 import javax.swing.*;
 import javax.swing.border.*;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 public class MainView {
 	private EventModel model;
 	private final Calendar cal;
@@ -27,13 +34,41 @@ public class MainView {
 		Controller c = new Controller(model);
 		c.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
 		JFrame frame = new JFrame();
+		JPanel month = new JPanel();
+		JButton previousMonth = new JButton("<<");
+		JButton nextMonth = new JButton(">>");
+		
+		previousMonth.setFocusable(false);
+		previousMonth.setBackground(new Color(241,241,241));
+		previousMonth.setForeground(Color.BLACK);
+		previousMonth.setFont(new Font("Tahoma", Font.BOLD, 16));
+
+		previousMonth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				model.previousMonth();
+			}
+		});
+
+		nextMonth.setFocusable(false);
+		nextMonth.setBackground(new Color(241,241,241));
+		nextMonth.setForeground(Color.BLACK);
+		nextMonth.setFont(new Font("Tahoma", Font.BOLD, 16));
+
+		nextMonth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				model.nextMonth();
+			}
+		});
 
 		monthPanel = new JPanel();
-        monthPanel.setLayout(new GridLayout(0, 7, 0, 0));
+        monthPanel.setLayout(new GridLayout(0, 7, 10, 10));
 		JPanel monthWrap = new JPanel();
 		monthWrap.setLayout(new BorderLayout());
 		monthLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		monthWrap.add(monthLabel, BorderLayout.NORTH);
+		month.add(previousMonth, BorderLayout.EAST);
+		month.add(monthLabel, BorderLayout.CENTER);
+		month.add(nextMonth, BorderLayout.WEST);
+		monthWrap.add(month, BorderLayout.NORTH);
 		monthWrap.add(monthPanel, BorderLayout.CENTER);
 		monthWrap.setSize(new Dimension(400,400));
 		monthWrap.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40)); 
@@ -71,6 +106,13 @@ public class MainView {
 		drawDayEvents();
 		eventsPanel.revalidate();
 		eventsPanel.repaint();
+	}
+	
+	public void repaintMonth() {
+		monthPanel.removeAll();
+		drawMonth(monthPanel);
+		monthPanel.revalidate();
+		monthPanel.repaint();
 	}
 
 	private void drawMonth(JPanel monthPanel) {
