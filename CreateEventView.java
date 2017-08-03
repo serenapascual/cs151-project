@@ -3,13 +3,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +18,7 @@ public class CreateEventView {
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 		Calendar cal = model.getCal();
-		SimpleDateFormat startTime = new SimpleDateFormat("hh:mmaa");
+		SimpleDateFormat startTime = new SimpleDateFormat("hh:mm aa");
 		Calendar endTime = new GregorianCalendar();
 		endTime.setTime(cal.getTime());
 		endTime.add(Calendar.MINUTE, 30);
@@ -59,28 +55,14 @@ public class CreateEventView {
 				String date = dateField.getText();
 				String start = startField.getText();
 				String end = endField.getText();
-
-				SimpleDateFormat sf = new SimpleDateFormat("MM/dd/yyyyhh:mmaa");
-				Date startDate = null;
-				try {
-					startDate = sf.parse(date+start);
-				} catch (ParseException ex) {
-					Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
-				}
-				Date endDate = null;
-				try {
-					endDate = sf.parse(date+end);
-				} catch (ParseException ex) {
-					Logger.getLogger(CreateEventView.class.getName()).log(Level.SEVERE, null, ex);
-				}
 				
-				Calendar startCal = new GregorianCalendar();
-                startCal.setTime(startDate);
-                Calendar endCal = new GregorianCalendar();
-                endCal.setTime(endDate);
-                
-                event eventNew = new event(title, (GregorianCalendar)startCal, (GregorianCalendar) endCal);
-                //System.out.println(eventNew.toString());
+				String[] dateArr = date.split("/");
+				int year = Integer.parseInt(dateArr[2]);
+				int day = Integer.parseInt(dateArr[1]);
+				int month = Integer.parseInt(dateArr[0]);
+//				System.out.println(day);
+//				System.out.println(month);
+                event eventNew = new event(title, year, month, day, start, end);
                 boolean conflict = false;
                 if(eventNew.getEnd().before(eventNew.getStart()) || eventNew.getStart().equals(eventNew.getEnd())) {
                 	JOptionPane.showMessageDialog(frame,

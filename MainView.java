@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,15 +36,43 @@ public class MainView {
 		this.model = model;
 		this.cal = model.getCal();
 		Controller c = new Controller(model);
-		c.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
+		//c.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
 		JFrame frame = new JFrame();
+		JPanel month = new JPanel();
+		JButton previousMonth = new JButton("<<");
+		JButton nextMonth = new JButton(">>");
+		
+		previousMonth.setFocusable(false);
+		previousMonth.setBackground(new Color(241,241,241));
+		previousMonth.setForeground(Color.BLACK);
+		previousMonth.setFont(new Font("Tahoma", Font.BOLD, 16));
+
+		previousMonth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				model.previousMonth();
+			}
+		});
+
+		nextMonth.setFocusable(false);
+		nextMonth.setBackground(new Color(241,241,241));
+		nextMonth.setForeground(Color.BLACK);
+		nextMonth.setFont(new Font("Tahoma", Font.BOLD, 16));
+
+		nextMonth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				model.nextMonth();
+			}
+		});
 
 		monthPanel = new JPanel();
         monthPanel.setLayout(new GridLayout(0, 7, 10, 10));
 		JPanel monthWrap = new JPanel();
 		monthWrap.setLayout(new BorderLayout());
 		monthLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		monthWrap.add(monthLabel, BorderLayout.NORTH);
+		month.add(previousMonth, BorderLayout.EAST);
+		month.add(monthLabel, BorderLayout.CENTER);
+		month.add(nextMonth, BorderLayout.WEST);
+		monthWrap.add(month, BorderLayout.NORTH);
 		monthWrap.add(monthPanel, BorderLayout.CENTER);
 		monthWrap.setSize(new Dimension(400,400));
 		monthWrap.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40)); 
@@ -80,6 +111,14 @@ public class MainView {
 		dayPanel.revalidate();
 		dayPanel.repaint();
 	}
+	
+	public void repaintMonth() {
+		monthPanel.removeAll();
+		drawMonth(monthPanel);
+		monthPanel.revalidate();
+		monthPanel.repaint();
+	}
+
 
 	private void drawMonth(JPanel monthPanel) {
 		//Gets the month and the year and sets it on the top of the month view
@@ -111,6 +150,7 @@ public class MainView {
 				day.addMouseListener(new MouseListener() {
 					public void mouseClicked(MouseEvent e) {
 						int num = Integer.parseInt(day.getText());
+						//System.out.println(num);
 						model.setDay(num);
 					}
 					public void mousePressed(MouseEvent e) {}
@@ -122,7 +162,6 @@ public class MainView {
 					day.setBorder(BorderFactory.createLineBorder(Color.black));
 				}
 				day.setFont(new Font("Tahoma", Font.BOLD, 16));
-				//Adds the JLabel to the JPanel
 				monthPanel.add(day);
 			}
 		}
@@ -176,13 +215,14 @@ public class MainView {
 		dayPanel.add(dayLabel, BorderLayout.NORTH);
 		ArrayList<event> events = model.getEvents();
 		for (event e : events) {
+			//System.out.println(events);
 			if (e.getStart().get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH) && (e.getStart().get(Calendar.MONTH) == cal.get(Calendar.MONTH)) 
 										&& (e.getStart().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) ) {
 
 				Date startDate = e.getStart().getTime();
 				Date endDate = e.getEnd().getTime();
 
-				SimpleDateFormat sf = new SimpleDateFormat("hh:mm aa");
+				SimpleDateFormat sf = new SimpleDateFormat("hh aa");
 				SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
 				SimpleDateFormat minFormat = new SimpleDateFormat("mm");
 				int startHour, startMin, endHour, endMin;
@@ -201,7 +241,10 @@ public class MainView {
 					toPosition++;
 				}
 				for(int i = formPosition; i<= toPosition; i++) {
-					fieldList.get(i).setText(e.getTitle() + " starts at "  + sf.format(startDate) + " and will end at " + sf.format(endDate));;
+					fieldList.get(i).setText(e.getTitle() + " starts at " );
+					/**
+					+ sf.format(startDate) + " and will end at " + sf.format(endDate));
+					*/
 				}
 //				dayPanel.add(new JLabel(e.getTitle()));
 //				dayPanel.add(new JLabel(sf.format(startDate)));

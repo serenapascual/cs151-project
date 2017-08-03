@@ -25,7 +25,7 @@ public class load{
 	public static void loadEvent() {
 		Scanner s = null;
 		try {
-			s = new Scanner(new File("events.txt"));
+			s = new Scanner(new File("input.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("This is your first run! The file was not found");
 			e.printStackTrace();
