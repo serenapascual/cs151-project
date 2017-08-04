@@ -89,8 +89,9 @@ public class MainView {
 		drawDayEvents();
 		scroll.getVerticalScrollBar().setUnitIncrement(16);
 		scroll.getViewport().add(eventsPanel);
-		scroll.setPreferredSize(new Dimension(500, 300));
-		scroll.setVerticalScrollBarPolicy(ScrollPaneLayout.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setPreferredSize(new Dimension(550, 300));
+		scroll.setVerticalScrollBarPolicy(ScrollPaneLayout.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneLayout.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		frame.add(c, BorderLayout.NORTH);
 		frame.add(monthWrap, BorderLayout.WEST);

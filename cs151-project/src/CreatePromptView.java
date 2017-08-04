@@ -60,6 +60,31 @@ public class CreatePromptView {
 				String start = startField.getText();
 				String end = endField.getText();
 				
+				// used to track whether an error dialog has popped up to prevent multiple
+				boolean dialogOpened = false;
+				
+				int startHour = 0;
+				int startMin = 0;
+				int endHour = 0;
+				int endMin = 0;
+				while (startHour == 0 && startMin == 0 && endHour == 0 && endMin == 0) {
+					try {
+						String[] startArr = start.split(":");
+						startHour = Integer.parseInt(startArr[0]);
+						startMin = Integer.parseInt(startArr[1].substring(0, 2));
+						String[] endArr = start.split(":");
+						endHour = Integer.parseInt(endArr[0]);
+						endMin = Integer.parseInt(startArr[1].substring(0, 2));
+					}
+					catch (NumberFormatException e1) {
+	                	JOptionPane.showMessageDialog(frame,
+	                            "Please enter a time in 12-hour format (HH:MM AM/PM).",
+	                            "Invalid input",
+	                            JOptionPane.WARNING_MESSAGE);
+	    				dialogOpened = true;
+					}
+				}
+				
 				String[] dateArr = date.split("/");
 				int year = Integer.parseInt(dateArr[2]);
 				int day = Integer.parseInt(dateArr[1]);
@@ -68,21 +93,36 @@ public class CreatePromptView {
 //				System.out.println(month);
                 Event eventNew = new Event(title, year, month, day, start, end);
                 boolean conflict = false;
-                if(eventNew.getEnd().before(eventNew.getStart()) || eventNew.getStart().equals(eventNew.getEnd())) {
+
+                if (((startHour >= 1 && startHour <= 12) == false
+                		|| (endHour >= 1 && endHour <= 12) == false
+                		|| (startMin >= 0 && startMin <= 59) == false
+                		|| (endMin >= 0 && endMin <= 59) == false)
+                		&& dialogOpened == false) {
+                	JOptionPane.showMessageDialog(frame,
+                            "Please enter a time in 12-hour format (HH:MM AM/PM).",
+                            "Invalid input",
+                            JOptionPane.WARNING_MESSAGE);
+                	dialogOpened = true;
+                }
+                else if ((eventNew.getEnd().before(eventNew.getStart())
+                		|| eventNew.getStart().equals(eventNew.getEnd()))
+                		&& dialogOpened == false) {
                 	JOptionPane.showMessageDialog(frame,
                             "The end time cannot be before the start time.",
                             "Time Conflict",
                             JOptionPane.WARNING_MESSAGE);
                         conflict = true;
+                        dialogOpened = true;
                 }
-                
                 for(Event events: model.getEvents()) {
-                	if(events.compareTo(eventNew) == 0) {
+                	if(events.compareTo(eventNew) == 0 && dialogOpened == false) {
                 		JOptionPane.showMessageDialog(frame,
-                                "Times cannot overlap. Please ensure that start time is different from end time",
+                                "Event times cannot overlap. Please check your existing events.",
                                 "Time Conflict",
                                 JOptionPane.WARNING_MESSAGE);
                             conflict = true;
+                            dialogOpened = true;
                             break;
                 	}
                 }
@@ -91,7 +131,6 @@ public class CreatePromptView {
                 	model.addEvent(eventNew);
                 }
                 conflict = false;
-                frame.dispose();
 			}
 		});
 		
