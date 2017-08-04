@@ -38,13 +38,8 @@ public class MainView {
 		JPanel month = new JPanel();
 		JButton previousMonth = new JButton("<<");
 		JButton nextMonth = new JButton(">>");
-<<<<<<< HEAD
-
-=======
-		
 		previousMonth.setOpaque(true);
 		previousMonth.setBorderPainted(false); // makes color bg show properly on Mac
->>>>>>> 234b288b553bf532e477ebd398a5d4efbd6a9475
 		previousMonth.setFocusable(false);
 		previousMonth.setBackground(new Color(241,241,241));
 		previousMonth.setForeground(Color.BLACK);
