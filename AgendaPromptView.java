@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.swing.*;
 
@@ -68,6 +69,21 @@ public class AgendaPromptView {
 		saveButton.setFont(new Font("Tahoma", Font.BOLD, 14));
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String[] startDateArr = startDateField.getText().split("/");
+				int startYear = Integer.parseInt(startDateArr[2]);
+				int startDay = Integer.parseInt(startDateArr[1]);
+				int startMonth = Integer.parseInt(startDateArr[0]);
+				
+				String[] endDateArr = endDateField.getText().split("/");
+				int endYear = Integer.parseInt(endDateArr[2]);
+				int endDay = Integer.parseInt(endDateArr[1]);
+				int endMonth = Integer.parseInt(endDateArr[0]);
+				
+				Calendar start = new GregorianCalendar(startYear, startMonth, startDay);
+				Calendar end = new GregorianCalendar(endYear, endMonth, endDay);
+				
+				model.setAgenda(start, end);
+				model.setViewType(EventModel.ViewTypes.AGENDA);
 				frame.dispose();
 			}
 		});

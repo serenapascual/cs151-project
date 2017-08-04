@@ -14,6 +14,8 @@ public class EventModel {
 	private Calendar cal;
 	private MainView view;
 	private ViewTypes viewType;
+	private Calendar agendaStart;
+	private Calendar agendaEnd;
 	
 	public enum ViewTypes {
 		DAY, WEEK, MONTH, AGENDA
@@ -30,6 +32,19 @@ public class EventModel {
 	
 	public ViewTypes getViewType() {
 		return viewType;
+	}
+	
+	public Calendar getAgendaStart() {
+		return agendaStart;
+	}
+	
+	public Calendar getAgendaEnd() {
+		return agendaEnd;
+	}
+	
+	public void setAgenda(Calendar start, Calendar end) {
+		agendaStart = start;
+		agendaEnd = end;
 	}
 	
 	public void setDay(int day) {

@@ -50,6 +50,10 @@ public class Event implements Comparable<Event>{
 		return month;
 	}
 	
+	public int getWeek() {
+		return this.start.get(Calendar.WEEK_OF_MONTH);
+	}
+	
 	public int getDay() {
 		return day;
 	}

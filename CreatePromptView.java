@@ -121,8 +121,8 @@ public class CreatePromptView {
 				int month = Integer.parseInt(dateArr[0]);
                 Event eventNew = new Event(title, year, month, day, start, end);
                 boolean conflict = false;
-                if (((startHour >= 1 && startHour <= 12) == false
-                		|| (endHour >= 1 && endHour <= 12) == false
+                if (((startHour >= 0 && startHour <= 24) == false
+                		|| (endHour >= 0 && endHour <= 24) == false
                 		|| (startMin >= 0 && startMin <= 59) == false
                 		|| (endMin >= 0 && endMin <= 59) == false)
                 		&& dialogOpened == false) {
@@ -155,7 +155,7 @@ public class CreatePromptView {
                 }
                 if(!conflict) {
                 	model.addEvent(eventNew);
-                	System.out.println("Event added");
+                	frame.dispose();
                 }
                 conflict = false;
                 dialogOpened = false;
