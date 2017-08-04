@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class AgendaPromptView {
 	public AgendaPromptView(final EventModel model) {
-		JFrame frame = new JFrame();
+		final JFrame frame = new JFrame();
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel subpanel = new JPanel();
 		
@@ -22,11 +22,11 @@ public class AgendaPromptView {
 		String firstEventDateString = "";
 		try {
 			Calendar firstEventDate = model.getEvents().get(0).getStart();
-			firstEventDateString = firstEventDate.get(Calendar.MONTH) + "/" + firstEventDate.get(Calendar.DAY_OF_MONTH)
+			firstEventDateString = (firstEventDate.get(Calendar.MONTH) + 1) + "/" + firstEventDate.get(Calendar.DAY_OF_MONTH)
 			+ "/" + firstEventDate.get(Calendar.YEAR);
 		}
 		catch (IndexOutOfBoundsException e) {
-			firstEventDateString = model.getCal().get(Calendar.MONTH) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
+			firstEventDateString = (model.getCal().get(Calendar.MONTH) + 1) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
 			+ "/" + model.getCal().get(Calendar.YEAR);
 		}
 		startDateField.setText(firstEventDateString);
@@ -36,11 +36,11 @@ public class AgendaPromptView {
 		String lastEventDateString = "";
 		try{
 			Calendar lastEventDate = model.getEvents().get(0).getStart();
-			lastEventDateString = lastEventDate.get(Calendar.MONTH) + "/" + lastEventDate.get(Calendar.DAY_OF_MONTH)
+			lastEventDateString = (lastEventDate.get(Calendar.MONTH) + 1) + "/" + lastEventDate.get(Calendar.DAY_OF_MONTH)
 			+ "/" + lastEventDate.get(Calendar.YEAR);
 		}
 		catch (IndexOutOfBoundsException e) {
-			lastEventDateString = model.getCal().get(Calendar.MONTH) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
+			lastEventDateString = (model.getCal().get(Calendar.MONTH) + 1) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
 			+ "/" + model.getCal().get(Calendar.YEAR);
 		}
 		endDateField.setText(lastEventDateString);
@@ -70,7 +70,6 @@ public class AgendaPromptView {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
 			}
-		
 		});
 		
 		subpanel.add(startDate);

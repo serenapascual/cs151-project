@@ -13,11 +13,25 @@ public class EventModel {
 	private ArrayList<Event> events = new ArrayList<>();
 	private Calendar cal;
 	private MainView view;
-
-	public EventModel() {
-		this.cal = new GregorianCalendar();
+	private ViewTypes viewType;
+	
+	public enum ViewTypes {
+		DAY, WEEK, MONTH, AGENDA
 	}
 
+	public EventModel() {
+		cal = new GregorianCalendar();
+		viewType = ViewTypes.DAY;
+	}
+	
+	public void setViewType(ViewTypes t) {
+		viewType = t;
+	}
+	
+	public ViewTypes getViewType() {
+		return viewType;
+	}
+	
 	public void setDay(int day) {
 		cal.set(Calendar.DAY_OF_MONTH, day);
 		view.repaint();
@@ -40,12 +54,12 @@ public class EventModel {
 
 	public void nextMonth() {
 		cal.add(Calendar.MONTH, 1);
-		view.repaintMonth();
+		view.repaint();
 	}
 
 	public void previousMonth() {
 		cal.add(Calendar.MONTH, -1);
-		view.repaintMonth();
+		view.repaint();
 	}
 
 	public Calendar getCal() {
@@ -71,7 +85,7 @@ public class EventModel {
 	}
 	
 	public void quit() {
-		Load load = new Load();
+		Loader load = new Loader();
 		load.saveEvent(events);
 	}
 

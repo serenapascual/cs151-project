@@ -28,21 +28,12 @@ public class Event implements Comparable<Event>{
 	}
 	
 	public void setTime() {
-		SimpleDateFormat sf = new SimpleDateFormat("M/dd/yyyy HH");
-		//System.out.println(month+""+day+""+year+""+startTime);
-		Date startDate = null;
-		try {
-			startDate = sf.parse(month+"/"+day+"/"+year+" "+startTime);
-		} catch (ParseException ex) {
-			System.out.println(ex.getMessage());
-		}
-		Date endDate = null;
-		try {
-			endDate = sf.parse(month+"/"+day+"/"+year+" "+endTime);
-		} catch (ParseException ex) {
-			System.out.println(ex.getMessage());
-		}
-		
+		@SuppressWarnings("deprecation")
+		Date startDate= new Date(year, month - 1, day, Integer.parseInt(startTime.substring(0, 2)),
+				Integer.parseInt(startTime.substring(2, 4)));
+		@SuppressWarnings("deprecation")
+		Date endDate = new Date(year, month - 1, day, Integer.parseInt(endTime.substring(0, 2)),
+				Integer.parseInt(endTime.substring(2, 4)));
 		start.setTime(startDate);
 		end.setTime(endDate);
 	}
@@ -70,6 +61,6 @@ public class Event implements Comparable<Event>{
 	}
 	
 	public String toString() {
-		return title +";"+ year +";"+ month +";"+ dayOfWeek +";"+ startTime +";"+ endTime ;
+		return title +";"+ year +";"+ month +";"+ dayOfWeek +";"+ startTime +";"+ endTime;
 	}
 }

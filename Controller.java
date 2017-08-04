@@ -20,24 +20,24 @@ public class Controller extends JPanel{
 		setBackground(Color.white);
 		setLayout(new BorderLayout());
 
-		JPanel upper = new JPanel();
+		final JPanel upper = new JPanel();
 		//	JPanel lower = new JPanel();
 		upper.setBackground(Color.white);
 		//	lower.setBackground(Color.white);
 
-		JButton today = new JButton("TODAY");
-		JButton create = new JButton("CREATE");
-		JButton previous = new JButton("<");
-		JButton next = new JButton(">");
+		final JButton today = new JButton("TODAY");
+		final JButton create = new JButton("CREATE");
+		final JButton previous = new JButton("<");
+		final JButton next = new JButton(">");
 		//		JButton previousMonth = new JButton("<<");
 		//		JButton nextMonth = new JButton(">>");
-		JButton quit = new JButton("QUIT");
-		JButton load = new JButton("LOAD EVENTS FROM FILE");
-		JButton day = new JButton("DAY");
-		JButton week = new JButton("WEEK");
-		JButton month = new JButton("MONTH");
-		JButton agenda = new JButton("AGENDA");
-		Calendar cal = Calendar.getInstance();
+		final JButton quit = new JButton("QUIT");
+		final JButton load = new JButton("LOAD EVENTS FROM FILE");
+		final JButton day = new JButton("DAY");
+		final JButton week = new JButton("WEEK");
+		final JButton month = new JButton("MONTH");
+		final JButton agenda = new JButton("AGENDA");
+		final Calendar cal = Calendar.getInstance();
 
 		today.setOpaque(true);
 		today.setBorderPainted(false); // makes color bg show properly on Mac
@@ -48,8 +48,6 @@ public class Controller extends JPanel{
 		today.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Calendar cal = new GregorianCalendar();
-				//				System.out.println(cal.get(Calendar.DATE));
-				//				System.out.println(cal.get(Calendar.DAY_OF_MONTH));
 				model.setToday(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
 			}
 		});
@@ -165,6 +163,7 @@ public class Controller extends JPanel{
 		day.setFont(new Font("Tahoma", Font.BOLD, 14));
 		day.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.DAY);
 				model.getView().drawDayEvents();
 			}
 		});
@@ -177,6 +176,7 @@ public class Controller extends JPanel{
 		week.setFont(new Font("Tahoma", Font.BOLD, 14));
 		week.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.WEEK);
 				model.getView().drawWeekEvents();
 			}
 		});
@@ -189,6 +189,7 @@ public class Controller extends JPanel{
 		month.setFont(new Font("Tahoma", Font.BOLD, 14));
 		month.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.MONTH);
 				model.getView().drawMonthEvents();
 			}
 		});
@@ -201,6 +202,7 @@ public class Controller extends JPanel{
 		agenda.setFont(new Font("Tahoma", Font.BOLD, 14));
 		agenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.AGENDA);
 				AgendaPromptView view = new AgendaPromptView(model);
 			}
 		});
@@ -228,4 +230,3 @@ public class Controller extends JPanel{
 		//	add(lower, BorderLayout.SOUTH);
 	}
 }
-
