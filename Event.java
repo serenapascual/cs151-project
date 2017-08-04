@@ -42,6 +42,18 @@ public class Event implements Comparable<Event>{
 		return title;
 	}
 
+	public int getYear() {
+		return year;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+	
+	public int getDay() {
+		return day;
+	}
+	
 	public Calendar getStart() {
 		return start;
 	}

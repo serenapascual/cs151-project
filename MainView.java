@@ -89,7 +89,7 @@ public class MainView {
 		drawDayEvents();
 		scroll.getVerticalScrollBar().setUnitIncrement(16);
 		scroll.getViewport().add(eventsPanel);
-		scroll.setPreferredSize(new Dimension(550, 300));
+		scroll.setPreferredSize(new Dimension(500, 300));
 		scroll.setVerticalScrollBarPolicy(ScrollPaneLayout.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneLayout.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -181,30 +181,25 @@ public class MainView {
 		dayHolder.setLayout(new BoxLayout(dayHolder, BoxLayout.PAGE_AXIS));
 
 		for(int i = 0 ; i < 48; i++) {
-			JTextField eventField = new JTextField(40);
+			JTextField eventField = new JTextField();
 			eventField.setEditable(false);
 			eventField.setFont(new Font("Tahoma", Font.BOLD, 14));
 			dayHolder.add(eventField);
 			fieldList.add(eventField);
 		}
+		
 		JPanel timePanel = new JPanel();
 		timePanel.setLayout(new BoxLayout(timePanel, BoxLayout.PAGE_AXIS));
-		for(int i = 0 ; i < 24;i++) {
+		for(int i = 0 ; i < 24; i++) {
 			JPanel t = new JPanel();
 			t.setLayout(new GridLayout(2,1));
 			JTextField a = new JTextField(5);
 			JTextField b = new JTextField(5);
 			String tag = "PM";
 			int currentHour = i;
-			if(currentHour < 12) {
-				tag = "AM";
-			}
-			if (currentHour == 0) {
-				currentHour += 12;
-			}
-			if (currentHour > 12) {
-				currentHour -= 12;
-			}
+			if(currentHour < 12) tag = "AM";
+			if (currentHour == 0) currentHour += 12;
+			if (currentHour > 12) currentHour -= 12;
 			a.setText(currentHour + ":00"+ tag );
 			a.setEditable(false);
 			b.setText(currentHour + ":30"+ tag );
@@ -220,9 +215,9 @@ public class MainView {
 		eventsPanel.add(dayHolder, BorderLayout.CENTER);
 		ArrayList<Event> events = model.getEvents();
 		for (Event e : events) {
-			if (e.getStart().get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH) && (e.getStart().get(Calendar.MONTH) == cal.get(Calendar.MONTH)) 
-										&& (e.getStart().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) ) {
-
+			if (e.getDay() == cal.get(Calendar.DAY_OF_MONTH)
+					&& (e.getMonth() == cal.get(Calendar.MONTH) + 1) 
+					&& (e.getYear() == cal.get(Calendar.YEAR))) {
 				Date startDate = e.getStart().getTime();
 				Date endDate = e.getEnd().getTime();
 
@@ -235,21 +230,13 @@ public class MainView {
 				endHour = Integer.parseInt(hourFormat.format(endDate));
 				endMin = Integer.parseInt(minFormat.format(endDate));
 
-				int formPosition = startHour*2;
-				if(startMin >= 30) {
-					formPosition++;
-				}
-				
-				int toPosition = endHour*2;
-				if(endMin >= 30) {
-					toPosition++;
-				}
-				for(int i = formPosition; i<= toPosition; i++) {
-					fieldList.get(i).setText(e.getTitle() + " starts at "  + sf.format(startDate) + " and will end at " + sf.format(endDate));;
-				}
-//				dayPanel.add(new JLabel(e.getTitle()));
-//				dayPanel.add(new JLabel(sf.format(startDate)));
-//				dayPanel.add(new JLabel(sf.format(endDate)));
+				int fromPosition = startHour * 2;
+				if (startMin >= 30) fromPosition++;
+				int toPosition = endHour * 2;
+				if (endMin >= 30) toPosition++;
+
+				fieldList.get(fromPosition).setText(e.getTitle() + " starts at " + sf.format(startDate));
+				fieldList.get(toPosition).setText(e.getTitle() + " ends at " + sf.format(endDate));
 			}
 		}
 		eventsPanel.revalidate();
