@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author Himanshu Mehta, Serena Pascual and Cherie Sew
  *
  */
-public class Load{
+public class Load {
 	private static ArrayList<Event> eventList = new ArrayList<Event>();
 	public static EventModel model = new EventModel();
 	

@@ -35,6 +35,8 @@ public class CreatePromptView {
 		JButton saveButton = new JButton("Save");
 		JButton cancelButton = new JButton("Cancel");
 
+		cancelButton.setOpaque(true);
+		cancelButton.setBorderPainted(false);
 		cancelButton.setFocusable(false);
 		cancelButton.setBackground(new Color(236, 151, 31));
 		cancelButton.setForeground(Color.WHITE);
@@ -45,6 +47,8 @@ public class CreatePromptView {
 			}
 		});
 
+		saveButton.setOpaque(true);
+		saveButton.setBorderPainted(false);
 		saveButton.setFocusable(false);
 		saveButton.setBackground(new Color(68, 157, 68));
 		saveButton.setForeground(Color.WHITE);
