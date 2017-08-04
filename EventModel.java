@@ -1,7 +1,10 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 /**
  * 
@@ -13,6 +16,9 @@ public class EventModel {
 	private ArrayList<Event> events = new ArrayList<>();
 	private Calendar cal;
 	private MainView view;
+	
+	private HashMap<String, ArrayList<Event>> eventMap = new HashMap<>();
+
 
 	public EventModel() {
 		this.cal = new GregorianCalendar();
@@ -54,6 +60,7 @@ public class EventModel {
 
 	public void addEvent(Event e) {
 		events.add(e);
+		eventMap.put(e.toString(), events);
 		Collections.sort(events);
 		view.repaint();
 	}
@@ -61,7 +68,7 @@ public class EventModel {
 	public void setView(MainView view) {
 		this.view = view;
 	}
-	
+
 	public MainView getView() {
 		return this.view;
 	}
@@ -69,7 +76,7 @@ public class EventModel {
 	public ArrayList<Event> getEvents() {
 		return events;
 	}
-	
+
 	public void quit() {
 		Load load = new Load();
 		load.saveEvent(events);
@@ -91,7 +98,7 @@ public class EventModel {
 			for(int j = 1; j <= daysInMonth; j++) {
 				if(dayOfWeek.contains(Weekday(year, i, j))) {
 					Event e = new Event(description, year, i, j, startTime, endTime+"");
-					events.add(e);
+					addEvent(e);
 				}
 			}
 		}
@@ -105,22 +112,22 @@ public class EventModel {
 		cal.set(year, month - 1, day);
 		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 		switch (dayOfWeek) {
-		   case 1:
-               return "S";
-           case 2:
-               return "M";
-           case 3:
-               return "T";
-           case 4:
-               return "W";
-           case 5:
-               return "H";
-           case 6:
-               return "F";
-           case 7:
-               return "A";
-           default:
-               return null;
+		case 1:
+			return "S";
+		case 2:
+			return "M";
+		case 3:
+			return "T";
+		case 4:
+			return "W";
+		case 5:
+			return "H";
+		case 6:
+			return "F";
+		case 7:
+			return "A";
+		default:
+			return null;
 		}
 	}
 }

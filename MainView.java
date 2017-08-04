@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 import javax.swing.*;
 import javax.swing.border.*;
 
+
 /**
  * 
  * @author Himanshu Mehta, Serena Pascual and Cherie Sew
@@ -27,7 +28,7 @@ public class MainView {
 	public static enum DAYS_OF_WEEK {
 		Sun, Mon, Tue, Wed, Thu, Fri, Sat
 	};
-	
+
 	public MainView(final EventModel model) {
 		this.model = model;
 		this.cal = model.getCal();
@@ -37,7 +38,7 @@ public class MainView {
 		JPanel month = new JPanel();
 		JButton previousMonth = new JButton("<<");
 		JButton nextMonth = new JButton(">>");
-		
+
 		previousMonth.setFocusable(false);
 		previousMonth.setBackground(new Color(241,241,241));
 		previousMonth.setForeground(Color.BLACK);
@@ -61,7 +62,7 @@ public class MainView {
 		});
 
 		monthPanel = new JPanel();
-        monthPanel.setLayout(new GridLayout(0, 7, 10, 10));
+		monthPanel.setLayout(new GridLayout(0, 7, 10, 10));
 		JPanel monthWrap = new JPanel();
 		monthWrap.setLayout(new BorderLayout());
 		monthLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -107,7 +108,7 @@ public class MainView {
 		eventsPanel.revalidate();
 		eventsPanel.repaint();
 	}
-	
+
 	public void repaintMonth() {
 		monthPanel.removeAll();
 		drawMonth(monthPanel);
@@ -213,7 +214,7 @@ public class MainView {
 		ArrayList<Event> events = model.getEvents();
 		for (Event e : events) {
 			if (e.getStart().get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH) && (e.getStart().get(Calendar.MONTH) == cal.get(Calendar.MONTH)) 
-										&& (e.getStart().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) ) {
+					&& (e.getStart().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) ) {
 
 				Date startDate = e.getStart().getTime();
 				Date endDate = e.getEnd().getTime();
@@ -231,7 +232,7 @@ public class MainView {
 				if(startMin >= 30) {
 					formPosition++;
 				}
-				
+
 				int toPosition = endHour*2;
 				if(endMin >= 30) {
 					toPosition++;
@@ -239,35 +240,35 @@ public class MainView {
 				for(int i = formPosition; i<= toPosition; i++) {
 					fieldList.get(i).setText(e.getTitle() + " starts at "  + sf.format(startDate) + " and will end at " + sf.format(endDate));;
 				}
-//				dayPanel.add(new JLabel(e.getTitle()));
-//				dayPanel.add(new JLabel(sf.format(startDate)));
-//				dayPanel.add(new JLabel(sf.format(endDate)));
+				//				dayPanel.add(new JLabel(e.getTitle()));
+				//				dayPanel.add(new JLabel(sf.format(startDate)));
+				//				dayPanel.add(new JLabel(sf.format(endDate)));
 			}
 		}
 		eventsPanel.revalidate();
 		eventsPanel.repaint();
 	}
-	
+
 	public void drawWeekEvents() {
 		eventsPanel.removeAll();
-		
+
 		Calendar firstDateOfWeek = (Calendar) cal.clone();
 		int differenceFromFirst = 1 - cal.get(Calendar.DAY_OF_WEEK);
 		firstDateOfWeek.add(Calendar.DAY_OF_MONTH, differenceFromFirst);
 		eventsLabel.setText(new SimpleDateFormat("dd MMMM yyyy").format(firstDateOfWeek.getTime()));
-		
+
 		Calendar lastDateOfWeek = (Calendar) cal.clone();
 		int differenceFromLast = 7 - cal.get(Calendar.DAY_OF_WEEK);
 		lastDateOfWeek.add(Calendar.DAY_OF_MONTH, differenceFromLast);
 		eventsLabel.setText(eventsLabel.getText() + " to " + new SimpleDateFormat("dd MMMM yyyy").format(lastDateOfWeek.getTime()));
-		
+
 		ArrayList<JTextField> fieldList = new ArrayList<>();
 		JPanel weekHolder = new JPanel();
 		weekHolder.setLayout(new BoxLayout(weekHolder, BoxLayout.PAGE_AXIS));
 
 		JPanel timePanel = new JPanel();
 		timePanel.setLayout(new BoxLayout(timePanel, BoxLayout.PAGE_AXIS));
-		
+
 		for(int i = 0 ; i < 7; i++) {
 			JTextField eventField = new JTextField(40);
 			eventField.setEditable(false);
@@ -278,68 +279,68 @@ public class MainView {
 			JPanel t = new JPanel();
 			t.setLayout(new GridLayout(1,1));
 			JTextField dayOfWeek = new JTextField();
-			
+
 			Calendar d = (Calendar) firstDateOfWeek.clone();
 			firstDateOfWeek.add(Calendar.DAY_OF_MONTH, 1);
-			
+
 			dayOfWeek.setText(new SimpleDateFormat("EEE, MMM d").format(d.getTime()));
 			dayOfWeek.setFont(new Font("Tahoma", Font.BOLD, 14));
 			dayOfWeek.setEditable(false);
 			t.add(dayOfWeek);
 			timePanel.add(t);
 		}
-		
+
 		eventsPanel.add(eventsLabel, BorderLayout.NORTH);
 		eventsPanel.add(timePanel, BorderLayout.WEST);
 		eventsPanel.add(weekHolder, BorderLayout.CENTER);
-		
+
 		eventsPanel.revalidate();
 		eventsPanel.repaint();
 	}
-	
+
 	public void drawMonthEvents() {
 		eventsPanel.removeAll();
-		
+
 		Calendar firstDateOfMonth = (Calendar) cal.clone();
 		int differenceFromFirst = 1 - cal.get(Calendar.DAY_OF_MONTH);
 		firstDateOfMonth.add(Calendar.DAY_OF_MONTH, differenceFromFirst);
 		eventsLabel.setText(new SimpleDateFormat("dd MMMM yyyy").format(firstDateOfMonth.getTime()));
-		
+
 		Calendar lastDateOfMonth = (Calendar) cal.clone();
 		int totalDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		int differenceFromLast = totalDays - cal.get(Calendar.DAY_OF_MONTH);
 		lastDateOfMonth.add(Calendar.DAY_OF_MONTH, differenceFromLast);
 		eventsLabel.setText(eventsLabel.getText() + " to " + new SimpleDateFormat("dd MMMM yyyy").format(lastDateOfMonth.getTime()));
 		eventsPanel.add(eventsLabel, BorderLayout.NORTH);
-		
+
 		ArrayList<JTextField> fieldList = new ArrayList<>();
 		JPanel monthHolder = new JPanel();
 		monthHolder.setLayout(new BoxLayout(monthHolder, BoxLayout.PAGE_AXIS));
 
 		JPanel timePanel = new JPanel();
 		timePanel.setLayout(new BoxLayout(timePanel, BoxLayout.PAGE_AXIS));
-		
+
 		for(int i = 0; i < totalDays; i++) {
 			JTextField eventField = new JTextField(40);
 			eventField.setEditable(false);
 			eventField.setFont(new Font("Tahoma", Font.BOLD, 14));
 			monthHolder.add(eventField);
 			fieldList.add(eventField);
-			
+
 			JPanel t = new JPanel();
 			t.setLayout(new GridLayout(1,1));
 			JTextField dayOfMonth = new JTextField();
-			
+
 			Calendar d = (Calendar) firstDateOfMonth.clone();
 			d.add(Calendar.DAY_OF_MONTH, i);
-			
+
 			dayOfMonth.setText(new SimpleDateFormat("EEE, MMM d").format(d.getTime()));
 			dayOfMonth.setFont(new Font("Tahoma", Font.BOLD, 14));
 			dayOfMonth.setEditable(false);
 			t.add(dayOfMonth);
 			timePanel.add(t);
 		}
-		
+
 		eventsPanel.add(eventsLabel, BorderLayout.NORTH);
 		eventsPanel.add(timePanel, BorderLayout.WEST);
 		eventsPanel.add(monthHolder, BorderLayout.CENTER);
@@ -347,5 +348,4 @@ public class MainView {
 		eventsPanel.revalidate();
 		eventsPanel.repaint();
 	}
-	
 }
