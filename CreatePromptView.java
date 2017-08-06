@@ -13,7 +13,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 public class CreatePromptView {
+	
+	/**
+	 * Pop up prompt for creating new event
+	 * @param model - MVC model with list of events
+	 */
 	public CreatePromptView(final EventModel model) {
 		final JFrame frame = new JFrame();
 		final JPanel panel = new JPanel();

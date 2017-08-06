@@ -12,10 +12,19 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 public class Controller extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Controller part of MVC for calendar program 
+	 * @param model - MVC model for list of events
+	 */
 	public Controller(final EventModel model){
 		setBackground(Color.white);
 		setLayout(new BorderLayout());

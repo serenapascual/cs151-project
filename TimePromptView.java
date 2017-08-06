@@ -11,6 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ * Pop up new panel for current time
+ *
+ */
+
 public class TimePromptView {
 	private JPanel panel = new JPanel();
 	
@@ -28,6 +35,10 @@ public class TimePromptView {
 		standardButton.setBackground(new Color(236, 151, 31));
 		standardButton.setForeground(Color.WHITE);
 		standardButton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		/**
+		 * Strategy Pattern
+		 * Anonymous class for standard time
+		 */
 		standardButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final DateFormatter format = new TimeFormatter();
@@ -41,9 +52,13 @@ public class TimePromptView {
 		militaryButton.setBackground(new Color(68, 157, 68));
 		militaryButton.setForeground(Color.WHITE);
 		militaryButton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		/**
+		 * Strategy Pattern
+		 * Anonymous class for military time
+		 */
 		militaryButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final DateFormatter format = new TimeFormatter();
+				final DateFormatter format = new MilitaryTimeFormatter();
 				displayMilitary(format.formatDate());
 			}
 		});
@@ -58,9 +73,13 @@ public class TimePromptView {
         
         
 	}
+	
+	/**
+	 * Strategy Pattern for Military Time
+	 * @param date
+	 */
 	 private void displayMilitary(String date)
 	    {
-
 	 		JPanel newPanel = new JPanel(new BorderLayout());		
 	 		JTextArea area = new JTextArea();
 	 		area.setText(date);
@@ -72,9 +91,13 @@ public class TimePromptView {
 	 		panel.repaint();
 	 	}
 	    
-	 	private void displayStandard(String date)
-	 	{
 
+	 /**
+	  * Strategy Pattern for Standard Time	
+	  * @param date
+	  */
+	 private void displayStandard(String date)
+	 	{
 	 		JPanel newPanel = new JPanel(new BorderLayout());	 		
 	 		JTextArea area = new JTextArea(date); 		
 	 		

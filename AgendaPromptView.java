@@ -7,7 +7,17 @@ import java.util.GregorianCalendar;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 public class AgendaPromptView {
+	
+	/**
+	 * Pop up new prompt for Agenda between two dates
+	 * @param model - MVC model with all the events
+	 */
 	public AgendaPromptView(final EventModel model) {
 		
 		final JFrame frame = new JFrame();
