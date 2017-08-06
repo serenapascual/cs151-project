@@ -5,9 +5,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class AgendaPromptView {
 	public AgendaPromptView(final EventModel model) {
+		
 		final JFrame frame = new JFrame();
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel subpanel = new JPanel();
