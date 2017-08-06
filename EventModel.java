@@ -170,6 +170,7 @@ public class EventModel {
 
 	/**
 	 * Populate the events panel with events
+	 * Recurring event loaded from file 
 	 * @param values
 	 */
 	public void populateEvents(String values) {
