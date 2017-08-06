@@ -94,7 +94,7 @@ public class MainView {
 		drawDayEvents();
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.getViewport().add(eventsPanel);
-		scrollPane.setPreferredSize(new Dimension(500, 300));
+		scrollPane.setPreferredSize(new Dimension(700, 300));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneLayout.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneLayout.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -119,7 +119,6 @@ public class MainView {
 		else if (model.getViewType().equals(EventModel.ViewTypes.WEEK)) drawWeekEvents();
 		else if (model.getViewType().equals(EventModel.ViewTypes.MONTH)) drawMonthEvents();
 		else if (model.getViewType().equals(EventModel.ViewTypes.AGENDA)) drawAgendaEvents(model.getAgendaStart(), model.getAgendaEnd());
-		scrollPane.setViewportView(eventsPanel);
 	}
 
 	/**
@@ -340,7 +339,7 @@ public class MainView {
 				endHour = Integer.parseInt(hourFormat.format(endDate));
 				endMin = Integer.parseInt(minFormat.format(endDate));
 
-				int position = startDate.getDay() - 1;
+				int position = startDate.getDay();
 				// if the text area is empty, don't add a line break
 				if (eventTextList.get(position).getText().length() == 0) {
 					eventTextList.get(position).append(e.getTitle() + " starts at " + sf.format(startDate)
@@ -437,7 +436,7 @@ public class MainView {
 				endHour = Integer.parseInt(hourFormat.format(endDate));
 				endMin = Integer.parseInt(minFormat.format(endDate));
 
-				int position = startDate.getDate() - 1;
+				int position = startDate.getDate();
 				// if the text area is empty, don't add a line break
 				if (eventTextList.get(position).getText().length() == 0) {
 					eventTextList.get(position).append(e.getTitle() + " starts at " + sf.format(startDate)
@@ -476,24 +475,31 @@ public class MainView {
 		GridBagConstraints c = new GridBagConstraints();
 		gridPanel.setLayout(grid);
 		
-		Calendar firstDateOfAgenda = (Calendar) start.clone();
-		int differenceFromFirst = 1 - cal.get(Calendar.DAY_OF_MONTH);
-		firstDateOfAgenda.add(Calendar.DAY_OF_MONTH, differenceFromFirst);
-		eventsHeader.setText(new SimpleDateFormat("dd MMMM yyyy").format(firstDateOfAgenda.getTime()));
+		Calendar startOfAgenda = (Calendar) start.clone();
+		startOfAgenda.add(Calendar.MONTH, -1);
+		Date dateOfStart = startOfAgenda.getTime();
+		// long timeOfStart = dateOfStart.getTime();
+		eventsHeader.setText(new SimpleDateFormat("dd MMMM yyyy").format(dateOfStart));
 		
-		Calendar lastDateOfAgenda = (Calendar) end.clone();
-		int totalDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		int differenceFromLast = totalDays - cal.get(Calendar.DAY_OF_MONTH);
-		lastDateOfAgenda.add(Calendar.DAY_OF_MONTH, differenceFromLast);
-		eventsHeader.setText(eventsHeader.getText() + " to " + new SimpleDateFormat("dd MMMM yyyy").format(lastDateOfAgenda.getTime()));
+		Calendar endOfAgenda = (Calendar) end.clone();
+		endOfAgenda.add(Calendar.MONTH, -1);
+		Date dateOfEnd = endOfAgenda.getTime();
+		// long timeOfEnd = dateOfEnd.getTime();
+		eventsHeader.setText(eventsHeader.getText() + " to " + new SimpleDateFormat("dd MMMM yyyy").format(dateOfEnd));
 		
 		ArrayList<JTextArea> eventTextList = new ArrayList<>();
 		ArrayList<JTextArea> timeList = new ArrayList<>();
 
-		for(int i = 0; i < totalDays; i++) {
+		ArrayList<Event> agendaEvents = new ArrayList<>();
+		for (Event e : model.getEvents()) {
+			if (start.before(e.getStart()) && end.after(e.getEnd())) {
+				agendaEvents.add(e);
+			}
+		}
+		
+		for(int i = 0; i < agendaEvents.size() - 1; i++) {
 			JTextArea dayOfMonth = new JTextArea();
-			Calendar d = (Calendar) firstDateOfAgenda.clone();
-			d.add(Calendar.DAY_OF_MONTH, i);
+			Calendar d = (Calendar) model.getEvents().get(i).getStart().clone();
 			dayOfMonth.setBackground(new Color(238, 238, 238));
 			dayOfMonth.setBorder(new LineBorder(new Color(184, 207, 229)));
 			dayOfMonth.setText(new SimpleDateFormat("EEE, MMM d").format(d.getTime()));
@@ -522,33 +528,31 @@ public class MainView {
 
 		ArrayList<Event> events = model.getEvents();
 
-		for (Event e : events) {
-			if (start.before(e.getStart()) && end.after(e.getEnd())) {
-				Date startDate = e.getStart().getTime();
-				Date endDate = e.getEnd().getTime();
+		for (Event e : agendaEvents) {
+			Date startDate = e.getStart().getTime();
+			Date endDate = e.getEnd().getTime();
 
-				SimpleDateFormat sf = new SimpleDateFormat("hh:mm aa");
-				SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
-				SimpleDateFormat minFormat = new SimpleDateFormat("mm");
-				int startHour, startMin, endHour, endMin;
-				startHour = Integer.parseInt(hourFormat.format(startDate));
-				startMin = Integer.parseInt(minFormat.format(startDate));
-				endHour = Integer.parseInt(hourFormat.format(endDate));
-				endMin = Integer.parseInt(minFormat.format(endDate));
+			SimpleDateFormat sf = new SimpleDateFormat("hh:mm aa");
+			SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+			SimpleDateFormat minFormat = new SimpleDateFormat("mm");
+			int startHour, startMin, endHour, endMin;
+			startHour = Integer.parseInt(hourFormat.format(startDate));
+			startMin = Integer.parseInt(minFormat.format(startDate));
+			endHour = Integer.parseInt(hourFormat.format(endDate));
+			endMin = Integer.parseInt(minFormat.format(endDate));
 
-				int position = startDate.getDate() - 1;
-				// if the text area is empty, don't add a line break
-				if (eventTextList.get(position).getText().length() == 0) {
-					eventTextList.get(position).append(e.getTitle() + " starts at " + sf.format(startDate)
-					+ " and ends at " + sf.format(endDate));
-				}
-				// if the text area is not empty, add a line break before the next event
-				// and another row to the respective time cell
-				else {
-					eventTextList.get(position).append("\n" + e.getTitle() + " starts at " + sf.format(startDate)
-					+ " and ends at " + sf.format(endDate));
-					timeList.get(position).append("\n");
-				}
+			int position = startDate.getDate() - 1;
+			// if the text area is empty, don't add a line break
+			if (eventTextList.get(position).getText().length() == 0) {
+				eventTextList.get(position).append(e.getTitle() + " starts at " + sf.format(startDate)
+				+ " and ends at " + sf.format(endDate));
+			}
+			// if the text area is not empty, add a line break before the next event
+			// and another row to the respective time cell
+			else {
+				eventTextList.get(position).append("\n" + e.getTitle() + " starts at " + sf.format(startDate)
+				+ " and ends at " + sf.format(endDate));
+				timeList.get(position).append("\n");
 			}
 		}
 		c.gridx = 0;

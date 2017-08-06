@@ -212,7 +212,6 @@ public class Controller extends JPanel{
 		agenda.setFont(new Font("Tahoma", Font.BOLD, 14));
 		agenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.setViewType(EventModel.ViewTypes.AGENDA);
 				AgendaPromptView view = new AgendaPromptView(model);
 			}
 		});

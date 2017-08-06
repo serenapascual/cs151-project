@@ -31,12 +31,12 @@ public class AgendaPromptView {
 		
 		JLabel startDate = new JLabel("Start date:");
 		
-		JTextField startDateField = new JTextField();
+		final JTextField startDateField = new JTextField();
 		String firstEventDateString = "";
 		try {
 			Calendar firstEventDate = model.getEvents().get(0).getStart();
 			firstEventDateString = (firstEventDate.get(Calendar.MONTH) + 1) + "/" + firstEventDate.get(Calendar.DAY_OF_MONTH)
-			+ "/" + firstEventDate.get(Calendar.YEAR);
+			+ "/" + (firstEventDate.get(Calendar.YEAR) - 1900);
 		}
 		catch (IndexOutOfBoundsException e) {
 			firstEventDateString = (model.getCal().get(Calendar.MONTH) + 1) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
@@ -45,12 +45,12 @@ public class AgendaPromptView {
 		startDateField.setText(firstEventDateString);
 
 		JLabel endDate = new JLabel("End date:");
-		JTextField endDateField = new JTextField();
+		final JTextField endDateField = new JTextField();
 		String lastEventDateString = "";
 		try{
-			Calendar lastEventDate = model.getEvents().get(0).getStart();
+			Calendar lastEventDate = model.getEvents().get(model.getEvents().size() - 1).getStart();
 			lastEventDateString = (lastEventDate.get(Calendar.MONTH) + 1) + "/" + lastEventDate.get(Calendar.DAY_OF_MONTH)
-			+ "/" + lastEventDate.get(Calendar.YEAR);
+			+ "/" + (lastEventDate.get(Calendar.YEAR) - 1900);
 		}
 		catch (IndexOutOfBoundsException e) {
 			lastEventDateString = (model.getCal().get(Calendar.MONTH) + 1) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
@@ -81,21 +81,40 @@ public class AgendaPromptView {
 		saveButton.setFont(new Font("Tahoma", Font.BOLD, 14));
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String[] startDateArr = startDateField.getText().split("/");
-				int startYear = Integer.parseInt(startDateArr[2]);
-				int startDay = Integer.parseInt(startDateArr[1]);
-				int startMonth = Integer.parseInt(startDateArr[0]);
-				
-				String[] endDateArr = endDateField.getText().split("/");
-				int endYear = Integer.parseInt(endDateArr[2]);
-				int endDay = Integer.parseInt(endDateArr[1]);
-				int endMonth = Integer.parseInt(endDateArr[0]);
-				
-				Calendar start = new GregorianCalendar(startYear, startMonth, startDay);
-				Calendar end = new GregorianCalendar(endYear, endMonth, endDay);
+				Calendar start = null;
+				Calendar end = null;
+				while (start == null) {
+					try {
+						String[] startDateArr = startDateField.getText().split("/");
+						int startYear = Integer.parseInt(startDateArr[2]);
+						int startDay = Integer.parseInt(startDateArr[1]);
+						int startMonth = Integer.parseInt(startDateArr[0]);
+						
+						String[] endDateArr = endDateField.getText().split("/");
+						int endYear = Integer.parseInt(endDateArr[2]);
+						int endDay = Integer.parseInt(endDateArr[1]);
+						int endMonth = Integer.parseInt(endDateArr[0]);
+
+						start = new GregorianCalendar(startYear, startMonth, startDay);
+						end = new GregorianCalendar(endYear, endMonth, endDay);
+					}
+					catch (NumberFormatException e) {
+						JOptionPane.showMessageDialog(frame,
+	                            "Please enter a date in the format MM/DD/YYYY.",
+	                            "Invalid input",
+	                            JOptionPane.WARNING_MESSAGE);
+					}
+					catch (ArrayIndexOutOfBoundsException e) {
+						JOptionPane.showMessageDialog(frame,
+	                            "Please enter a date in the format MM/DD/YYYY.",
+	                            "Invalid input",
+	                            JOptionPane.WARNING_MESSAGE);
+					}
+				}
 				
 				model.setAgenda(start, end);
 				model.setViewType(EventModel.ViewTypes.AGENDA);
+				model.getView().drawAgendaEvents(model.getAgendaStart(), model.getAgendaEnd());
 				frame.dispose();
 			}
 		});
