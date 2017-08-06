@@ -29,6 +29,10 @@ public class MainView {
 		Sun, Mon, Tue, Wed, Thu, Fri, Sat
 	};
 	
+	/**
+	 * Constructs layout for panel with event information, day, week, month, and agenda view
+	 * @param model - MVC model with all the events
+	 */
 	public MainView(final EventModel model) {
 		this.model = model;
 		this.cal = model.getCal();
@@ -103,6 +107,9 @@ public class MainView {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Repaint panel according to the type of view selected
+	 */
 	public void repaint() {
 		monthPanel.removeAll();
 		drawMonth(monthPanel);
@@ -115,6 +122,10 @@ public class MainView {
 		scrollPane.setViewportView(eventsPanel);
 	}
 
+	/**
+	 * Constructs Calendar View 
+	 * @param monthPanel - panel for the calendar
+	 */
 	private void drawMonth(JPanel monthPanel) {
 		//Gets the month and the year and sets it on the top of the month view
 		monthLabel.setText(new SimpleDateFormat("MMMM yyyy").format(cal.getTime()));
@@ -162,6 +173,9 @@ public class MainView {
 		}
 	}
 
+	/**
+	 * Construct Day View - Displays all events happening in a day
+	 */
 	public void drawDayEvents() {
 		eventsPanel.removeAll();
 		
@@ -258,6 +272,9 @@ public class MainView {
 		eventsPanel.repaint();
 	}
 	
+	/**
+	 * Constructs Week View - Display all events happening during the week
+	 */
 	public void drawWeekEvents() {
 		eventsPanel.removeAll();
 		
@@ -349,6 +366,9 @@ public class MainView {
 		eventsPanel.repaint();
 	}
 	
+	/**
+	 * Constructs Month View - Displays Events happening throughout a month 
+	 */
 	public void drawMonthEvents() {
 		eventsPanel.removeAll();
 		
@@ -443,6 +463,11 @@ public class MainView {
 		eventsPanel.repaint();
 	}
 	
+	/**
+	 * Constructs Agenda View - Displays list of all events happening between two dates
+	 * @param start - Starting Date of Agenda
+	 * @param end - Ending Date of Agenda
+	 */
 	public void drawAgendaEvents(Calendar start, Calendar end) {
 		eventsPanel.removeAll();
 		

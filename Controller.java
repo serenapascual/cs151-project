@@ -12,10 +12,19 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 public class Controller extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Controller part of MVC for calendar program 
+	 * @param model - MVC model for list of events
+	 */
 	public Controller(final EventModel model){
 		setBackground(Color.white);
 		setLayout(new BorderLayout());
@@ -37,6 +46,7 @@ public class Controller extends JPanel{
 		final JButton week = new JButton("WEEK");
 		final JButton month = new JButton("MONTH");
 		final JButton agenda = new JButton("AGENDA");
+		final JButton currentTime = new JButton("CURRENT TIME");
 		final Calendar cal = Calendar.getInstance();
 
 		today.setOpaque(true);
@@ -202,9 +212,24 @@ public class Controller extends JPanel{
 		agenda.setFont(new Font("Tahoma", Font.BOLD, 14));
 		agenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.AGENDA);
 				AgendaPromptView view = new AgendaPromptView(model);
 			}
 		});
+		
+		currentTime.setOpaque(true);
+		currentTime.setBorderPainted(false);
+		currentTime.setFocusable(false);
+		currentTime.setBackground(new Color(48, 48, 48));
+		currentTime.setForeground(Color.WHITE);
+		currentTime.setFont(new Font("Tahoma", Font.BOLD, 14));
+		currentTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TimePromptView view = new TimePromptView();
+				
+			}
+		});
+		
 
 		upper.add(today);
 		//		upper.add(previousMonth);
@@ -221,6 +246,7 @@ public class Controller extends JPanel{
 		upper.add(week);
 		upper.add(month);
 		upper.add(agenda);
+		upper.add(currentTime);
 		
 		upper.add(quit);
 		upper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
