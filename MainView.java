@@ -436,7 +436,7 @@ public class MainView {
 				endHour = Integer.parseInt(hourFormat.format(endDate));
 				endMin = Integer.parseInt(minFormat.format(endDate));
 
-				int position = startDate.getDate();
+				int position = startDate.getDate() - 1;
 				// if the text area is empty, don't add a line break
 				if (eventTextList.get(position).getText().length() == 0) {
 					eventTextList.get(position).append(e.getTitle() + " starts at " + sf.format(startDate)
@@ -476,13 +476,11 @@ public class MainView {
 		gridPanel.setLayout(grid);
 		
 		Calendar startOfAgenda = (Calendar) start.clone();
-		startOfAgenda.add(Calendar.MONTH, -1);
 		Date dateOfStart = startOfAgenda.getTime();
 		// long timeOfStart = dateOfStart.getTime();
 		eventsHeader.setText(new SimpleDateFormat("dd MMMM yyyy").format(dateOfStart));
 		
 		Calendar endOfAgenda = (Calendar) end.clone();
-		endOfAgenda.add(Calendar.MONTH, -1);
 		Date dateOfEnd = endOfAgenda.getTime();
 		// long timeOfEnd = dateOfEnd.getTime();
 		eventsHeader.setText(eventsHeader.getText() + " to " + new SimpleDateFormat("dd MMMM yyyy").format(dateOfEnd));
@@ -492,12 +490,20 @@ public class MainView {
 
 		ArrayList<Event> agendaEvents = new ArrayList<>();
 		for (Event e : model.getEvents()) {
-			if (start.before(e.getStart()) && end.after(e.getEnd())) {
+
+			if ((start.before(e.getStart()) 
+					|| (start.get(Calendar.YEAR) == e.getStart().get(Calendar.YEAR)
+					&& start.get(Calendar.MONTH) == e.getStart().get(Calendar.MONTH)
+					&& start.get(Calendar.DAY_OF_MONTH) == e.getStart().get(Calendar.DAY_OF_MONTH)))
+				&& (end.after(e.getStart())
+					|| (end.get(Calendar.YEAR) == e.getStart().get(Calendar.YEAR)
+					&& end.get(Calendar.MONTH) == e.getStart().get(Calendar.MONTH)
+					&& end.get(Calendar.DAY_OF_MONTH) == e.getStart().get(Calendar.DAY_OF_MONTH)))) {
 				agendaEvents.add(e);
 			}
 		}
 		
-		for(int i = 0; i < agendaEvents.size() - 1; i++) {
+		for(int i = 0; i < agendaEvents.size(); i++) {
 			JTextArea dayOfMonth = new JTextArea();
 			Calendar d = (Calendar) model.getEvents().get(i).getStart().clone();
 			dayOfMonth.setBackground(new Color(238, 238, 238));
@@ -528,9 +534,9 @@ public class MainView {
 
 		ArrayList<Event> events = model.getEvents();
 
-		for (Event e : agendaEvents) {
-			Date startDate = e.getStart().getTime();
-			Date endDate = e.getEnd().getTime();
+		for (int i = 0; i < agendaEvents.size(); i++) {
+			Date startDate = agendaEvents.get(i).getStart().getTime();
+			Date endDate = agendaEvents.get(i).getEnd().getTime();
 
 			SimpleDateFormat sf = new SimpleDateFormat("hh:mm aa");
 			SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
@@ -541,16 +547,16 @@ public class MainView {
 			endHour = Integer.parseInt(hourFormat.format(endDate));
 			endMin = Integer.parseInt(minFormat.format(endDate));
 
-			int position = startDate.getDate() - 1;
+			int position = i;
 			// if the text area is empty, don't add a line break
 			if (eventTextList.get(position).getText().length() == 0) {
-				eventTextList.get(position).append(e.getTitle() + " starts at " + sf.format(startDate)
+				eventTextList.get(position).append(agendaEvents.get(i).getTitle() + " starts at " + sf.format(startDate)
 				+ " and ends at " + sf.format(endDate));
 			}
 			// if the text area is not empty, add a line break before the next event
 			// and another row to the respective time cell
 			else {
-				eventTextList.get(position).append("\n" + e.getTitle() + " starts at " + sf.format(startDate)
+				eventTextList.get(position).append("\n" + agendaEvents.get(i).getTitle() + " starts at " + sf.format(startDate)
 				+ " and ends at " + sf.format(endDate));
 				timeList.get(position).append("\n");
 			}
