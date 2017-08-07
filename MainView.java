@@ -437,7 +437,7 @@ public class MainView {
 				endHour = Integer.parseInt(hourFormat.format(endDate));
 				endMin = Integer.parseInt(minFormat.format(endDate));
 
-				int position = startDate.getDate()-1;
+				int position = startDate.getDate() - 1;
 				// if the text area is empty, don't add a line break
 				if (eventTextList.get(position).getText().length() == 0) {
 					eventTextList.get(position).append(e.getTitle() + " starts at " + sf.format(startDate)
@@ -469,7 +469,6 @@ public class MainView {
 	 * @param end - Ending Date of Agenda
 	 */
 	public void drawAgendaEvents(Calendar start, Calendar end) {
-
 		eventsPanel.removeAll();
 		eventsHeader.setText("Agenda");
 		DateFormat format = new SimpleDateFormat("EEE MMM d, yyyy");

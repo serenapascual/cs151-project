@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -65,7 +66,7 @@ public class TimePromptView {
 		
 		panel.add(standardButton);
 		panel.add(militaryButton);
-		panel.setPreferredSize(new Dimension(350, 250));
+		panel.setPreferredSize(new Dimension(350, 150));
 		frame.add(panel);
         frame.pack();
         frame.setResizable(false);
@@ -76,13 +77,16 @@ public class TimePromptView {
 	
 	/**
 	 * Strategy Pattern for Military Time
-	 * @param date
+	 * @param date to display
 	 */
 	 private void displayMilitary(String date)
 	    {
 	 		JPanel newPanel = new JPanel(new BorderLayout());		
 	 		JTextArea area = new JTextArea();
+	 		
 	 		area.setText(date);
+	 		area.setOpaque(false);
+	 		area.setFont(new Font("Tahoma", Font.BOLD, 30));
 	 		
 	 		newPanel.add(area, BorderLayout.NORTH);
 	 		
@@ -94,12 +98,15 @@ public class TimePromptView {
 
 	 /**
 	  * Strategy Pattern for Standard Time	
-	  * @param date
+	  * @param date to display
 	  */
 	 private void displayStandard(String date)
 	 	{
 	 		JPanel newPanel = new JPanel(new BorderLayout());	 		
-	 		JTextArea area = new JTextArea(date); 		
+	 		JTextArea area = new JTextArea(date); 
+	 		
+	 		area.setOpaque(false);
+	 		area.setFont(new Font("Tahoma", Font.BOLD, 30));
 	 		
 	 		newPanel.add(area, BorderLayout.NORTH);
 	 	 		
@@ -107,6 +114,4 @@ public class TimePromptView {
 	 		panel.revalidate();
 	 		panel.repaint();
 	 	}
-
-	
 }
