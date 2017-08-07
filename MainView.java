@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -469,105 +470,37 @@ public class MainView {
 	 */
 	public void drawAgendaEvents(Calendar start, Calendar end) {
 		eventsPanel.removeAll();
-		
-		JPanel gridPanel = new JPanel();
-		GridBagLayout grid = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-		gridPanel.setLayout(grid);
-		
-		Calendar startOfAgenda = (Calendar) start.clone();
-		Date dateOfStart = startOfAgenda.getTime();
-		// long timeOfStart = dateOfStart.getTime();
-		eventsHeader.setText(new SimpleDateFormat("dd MMMM yyyy").format(dateOfStart));
-		
-		Calendar endOfAgenda = (Calendar) end.clone();
-		Date dateOfEnd = endOfAgenda.getTime();
-		// long timeOfEnd = dateOfEnd.getTime();
-		eventsHeader.setText(eventsHeader.getText() + " to " + new SimpleDateFormat("dd MMMM yyyy").format(dateOfEnd));
-		
-		ArrayList<JTextArea> eventTextList = new ArrayList<>();
-		ArrayList<JTextArea> timeList = new ArrayList<>();
-
+		eventsHeader.setText("Agenda");
+		DateFormat format = new SimpleDateFormat("EEE MMM d, yyyy");
+		DateFormat timeFormat = new SimpleDateFormat("h:mm a"	);
+		JPanel holder =  new JPanel();
+		holder.setBackground(Color.WHITE);
+		holder.setLayout(new BoxLayout(holder, BoxLayout.Y_AXIS));
+		holder.setBorder(new EmptyBorder(10, 10, 10, 10));
 		ArrayList<Event> agendaEvents = new ArrayList<>();
 		for (Event e : model.getEvents()) {
-
-			if ((start.before(e.getStart()) 
-					|| (start.get(Calendar.YEAR) == e.getStart().get(Calendar.YEAR)
-					&& start.get(Calendar.MONTH) == e.getStart().get(Calendar.MONTH)
-					&& start.get(Calendar.DAY_OF_MONTH) == e.getStart().get(Calendar.DAY_OF_MONTH)))
-				&& (end.after(e.getStart())
-					|| (end.get(Calendar.YEAR) == e.getStart().get(Calendar.YEAR)
-					&& end.get(Calendar.MONTH) == e.getStart().get(Calendar.MONTH)
-					&& end.get(Calendar.DAY_OF_MONTH) == e.getStart().get(Calendar.DAY_OF_MONTH)))) {
+			if (start.before(e.getStart()) && end.after(e.getEnd())) {
 				agendaEvents.add(e);
 			}
 		}
-		
-		for(int i = 0; i < agendaEvents.size(); i++) {
-			JTextArea dayOfMonth = new JTextArea();
-			Calendar d = (Calendar) model.getEvents().get(i).getStart().clone();
-			dayOfMonth.setBackground(new Color(238, 238, 238));
-			dayOfMonth.setBorder(new LineBorder(new Color(184, 207, 229)));
-			dayOfMonth.setText(new SimpleDateFormat("EEE, MMM d").format(d.getTime()));
-			dayOfMonth.setFont(new Font("Tahoma", Font.BOLD, 14));
-			dayOfMonth.setEditable(false);
+		for(Event e : agendaEvents) {
+			JPanel eventHolder = new JPanel();
+			eventHolder.setBackground(Color.white);
+			eventHolder.setLayout(new BorderLayout());
+				String str = format.format(e.getStart().getTime());
+				str += "     ";
+				str += timeFormat.format(e.getEnd().getTime()) + " - " + timeFormat.format(e.getEnd().getTime());
+				str += "     ";
+				str += e.getTitle();
+				String s = e.getTitle() + " " + format.format(e.getStart().getTime()) + " " + timeFormat.format(e.getStart().getTime()) + " " + timeFormat.format(e.getEnd().getTime());
+				JLabel eventLabel = new JLabel(s);
+				eventLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+				holder.add(eventLabel);
 			
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.gridx = 0;
-			c.gridy = i + 1;
-			c.weightx = 0.05;
-			gridPanel.add(dayOfMonth, c);
-			timeList.add(dayOfMonth);
-			
-			JTextArea eventText = new JTextArea();
-			eventText.setBackground(new Color(238, 238, 238));
-			eventText.setBorder(new LineBorder(new Color(184, 207, 229)));
-			eventText.setEditable(false);
-			eventText.setFont(new Font("Tahoma", Font.BOLD, 14));
-			gridPanel.add(eventText);
-			c.gridx = 1;
-			c.gridy = i + 1;
-			c.weightx = 1.0;
-			gridPanel.add(eventText, c);
-			eventTextList.add(eventText);
 		}
 
-		ArrayList<Event> events = model.getEvents();
-
-		for (int i = 0; i < agendaEvents.size(); i++) {
-			Date startDate = agendaEvents.get(i).getStart().getTime();
-			Date endDate = agendaEvents.get(i).getEnd().getTime();
-
-			SimpleDateFormat sf = new SimpleDateFormat("hh:mm aa");
-			SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
-			SimpleDateFormat minFormat = new SimpleDateFormat("mm");
-			int startHour, startMin, endHour, endMin;
-			startHour = Integer.parseInt(hourFormat.format(startDate));
-			startMin = Integer.parseInt(minFormat.format(startDate));
-			endHour = Integer.parseInt(hourFormat.format(endDate));
-			endMin = Integer.parseInt(minFormat.format(endDate));
-
-			int position = i;
-			// if the text area is empty, don't add a line break
-			if (eventTextList.get(position).getText().length() == 0) {
-				eventTextList.get(position).append(agendaEvents.get(i).getTitle() + " starts at " + sf.format(startDate)
-				+ " and ends at " + sf.format(endDate));
-			}
-			// if the text area is not empty, add a line break before the next event
-			// and another row to the respective time cell
-			else {
-				eventTextList.get(position).append("\n" + agendaEvents.get(i).getTitle() + " starts at " + sf.format(startDate)
-				+ " and ends at " + sf.format(endDate));
-				timeList.get(position).append("\n");
-			}
-		}
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 2;
-		c.weightx = 1.0;
-		gridPanel.add(eventsHeader, c);
-		
-		eventsPanel.add(gridPanel, BorderLayout.NORTH);
+		eventsPanel.add(eventsHeader, BorderLayout.NORTH);
+		eventsPanel.add(holder, BorderLayout.CENTER);
 		eventsPanel.revalidate();
 		eventsPanel.repaint();
 	}

@@ -45,12 +45,13 @@ public class Event implements Comparable<Event>{
 	 * Set the time of an event 
 	 */
 	public void setTime() {
+		Calendar temp = new GregorianCalendar(year, month - 1, day, Integer.parseInt(startTime),00);
 		@SuppressWarnings("deprecation")
-		Date startDate= new Date(year, month - 1, day, Integer.parseInt(startTime.substring(0, 2)),
-				Integer.parseInt(startTime.substring(2, 4)));
+		Date startDate= temp.getTime();
+		temp.set(year, month - 1, day, Integer.parseInt(endTime),00);
+		
 		@SuppressWarnings("deprecation")
-		Date endDate = new Date(year, month - 1, day, Integer.parseInt(endTime.substring(0, 2)),
-				Integer.parseInt(endTime.substring(2, 4)));
+		Date endDate = temp.getTime();
 		start.setTime(startDate);
 		end.setTime(endDate);
 	}

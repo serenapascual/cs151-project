@@ -36,7 +36,7 @@ public class AgendaPromptView {
 		try {
 			Calendar firstEventDate = model.getEvents().get(0).getStart();
 			firstEventDateString = (firstEventDate.get(Calendar.MONTH) + 1) + "/" + firstEventDate.get(Calendar.DAY_OF_MONTH)
-			+ "/" + (firstEventDate.get(Calendar.YEAR) - 1900);
+			+ "/" + (firstEventDate.get(Calendar.YEAR));
 		}
 		catch (IndexOutOfBoundsException e) {
 			firstEventDateString = (model.getCal().get(Calendar.MONTH) + 1) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)
@@ -50,7 +50,7 @@ public class AgendaPromptView {
 		try{
 			Calendar lastEventDate = model.getEvents().get(model.getEvents().size() - 1).getStart();
 			lastEventDateString = (lastEventDate.get(Calendar.MONTH) + 1) + "/" + lastEventDate.get(Calendar.DAY_OF_MONTH)
-			+ "/" + (lastEventDate.get(Calendar.YEAR) - 1900);
+			+ "/" + (lastEventDate.get(Calendar.YEAR));
 		}
 		catch (IndexOutOfBoundsException e) {
 			lastEventDateString = (model.getCal().get(Calendar.MONTH) + 1) + "/" + model.getCal().get(Calendar.DAY_OF_MONTH)

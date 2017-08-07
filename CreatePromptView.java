@@ -28,7 +28,7 @@ public class CreatePromptView {
 		final JFrame frame = new JFrame();
 		final JPanel panel = new JPanel();
 		final Calendar cal = model.getCal();
-		final SimpleDateFormat startTime = new SimpleDateFormat("hh:mmaa");
+		final SimpleDateFormat startTime = new SimpleDateFormat("hh:mm aa");
 		final Calendar endTime = new GregorianCalendar();
 		endTime.setTime(cal.getTime());
 		endTime.add(Calendar.MINUTE, 30);

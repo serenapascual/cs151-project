@@ -13,8 +13,11 @@ public class MilitaryTimeFormatter implements DateFormatter {
 	
 	private Date date= new Date();
 
+  /**
+  * Formats the date
+  * @return the formatted date
+  */
 	public String formatDate() {
-		// TODO Auto-generated method stub
 	
 		DateFormat timeFormat = new SimpleDateFormat(" HH:mm:ss");
 		Date date = new Date();
