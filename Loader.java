@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 /**
  * This class saves the events to events.txt when program terminates, and also
  * loads the events from the text file.
@@ -8,14 +9,14 @@ import java.util.Scanner;
  * @author Himanshu Mehta, Serena Pascual and Cherie Sew
  *
  */
-public class Load {
+public class Loader {
 	private static ArrayList<Event> eventList = new ArrayList<Event>();
 	public static EventModel model = new EventModel();
 	
-	public Load(final EventModel model) {
+	public Loader(final EventModel model) {
 		this.model = model;
 	}
-	public Load() {
+	public Loader() {
 		
 	}
 

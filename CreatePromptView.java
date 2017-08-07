@@ -13,27 +13,37 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 public class CreatePromptView {
+	
+	/**
+	 * Pop up prompt for creating new event
+	 * @param model - MVC model with list of events
+	 */
 	public CreatePromptView(final EventModel model) {
-		JFrame frame = new JFrame();
-		JPanel panel = new JPanel();
-		Calendar cal = model.getCal();
-		SimpleDateFormat startTime = new SimpleDateFormat("HH:mm aa");
-		Calendar endTime = new GregorianCalendar();
+		final JFrame frame = new JFrame();
+		final JPanel panel = new JPanel();
+		final Calendar cal = model.getCal();
+		final SimpleDateFormat startTime = new SimpleDateFormat("hh:mm aa");
+		final Calendar endTime = new GregorianCalendar();
 		endTime.setTime(cal.getTime());
 		endTime.add(Calendar.MINUTE, 30);
 
 		startTime.format(cal.getTime());
-		JLabel title = new JLabel("Title: ");
-		JTextField titleField = new JTextField("Untitled event",20);
-		JLabel date = new JLabel("Date (MM/DD/YYYY): ");
-		JTextField dateField = new JTextField((cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR), 20);
-		JLabel start = new JLabel("Start Time:");
-		JTextField startField = new JTextField(startTime.format(cal.getTime()), 20);
-		JLabel end = new JLabel("End Time:");
-		JTextField endField = new JTextField(startTime.format(endTime.getTime()),20);
-		JButton saveButton = new JButton("Save");
-		JButton cancelButton = new JButton("Cancel");
+		final JLabel title = new JLabel("Title: ");
+		final JTextField titleField = new JTextField("Untitled event",20);
+		final JLabel date = new JLabel("Date (MM/DD/YYYY): ");
+		final JTextField dateField = new JTextField((cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR), 20);
+		final JLabel start = new JLabel("Start Time:");
+		final JTextField startField = new JTextField(startTime.format(cal.getTime()), 20);
+		final JLabel end = new JLabel("End Time:");
+		final JTextField endField = new JTextField(startTime.format(endTime.getTime()),20);
+		final JButton saveButton = new JButton("Save");
+		final JButton cancelButton = new JButton("Cancel");
 
 		cancelButton.setOpaque(true);
 		cancelButton.setBorderPainted(false);
@@ -59,39 +69,106 @@ public class CreatePromptView {
 				String date = dateField.getText();
 				String start = startField.getText();
 				String end = endField.getText();
+				// used to track whether an error dialog has popped up to prevent multiple
+				boolean dialogOpened = false;
+				
+				int startHour = 0;
+				int startMin = 0;
+				int endHour = 0;
+				int endMin = 0;
+				String startAmPm = "";
+				String endAmPm = "";
+				while (startHour == 0 && startMin == 0 && endHour == 0 && endMin == 0) {
+					try {
+						String[] startArr = start.split(":");
+						startHour = Integer.parseInt(startArr[0]);
+						startMin = Integer.parseInt(startArr[1].substring(0, 2));
+						startAmPm = startArr[1].substring(2, 4);
+						String[] endArr = end.split(":");
+						endHour = Integer.parseInt(endArr[0]);
+						endMin = Integer.parseInt(endArr[1].substring(0, 2));
+						endAmPm = endArr[1].substring(2, 4);
+					}
+					catch (NumberFormatException e1) {
+	                	JOptionPane.showMessageDialog(frame,
+	                            "Please enter a time in 12-hour format (HH:MMam/pm).",
+	                            "Invalid input",
+	                            JOptionPane.WARNING_MESSAGE);
+	    				dialogOpened = true;
+					}
+				}
+				
+				// format start time and end time to 24-hour time
+				if (startHour == 12 && startAmPm.toUpperCase().equals("AM")) startHour = 0;
+				if (startHour == 12 && startAmPm.toUpperCase().equals("PM")) startHour = 12;
+				else if (startAmPm.toUpperCase().equals("PM")) startHour += 12;
+				if (endHour == 12 && endAmPm.toUpperCase().equals("AM")) endHour = 0;
+				if (endHour == 12 && endAmPm.toUpperCase().equals("PM")) endHour = 12;
+				else if (endAmPm.toUpperCase().equals("PM")) endHour += 12;
+				
+				String startHourStr = "" + startHour;
+				String startMinStr = "" + startMin;
+				String endHourStr = "" + endHour;
+				String endMinStr = "" + endMin;
+				if (startHour < 10) {
+					startHourStr = "0" + startHour;
+				}
+				if (startMin < 10) {
+					startMinStr = "0" + startMin;
+				}
+				if (endHour < 10) {
+					endHourStr = "0" + endHour;
+				}
+				if (endMin < 10) {
+					endMinStr = "0" + endMin;
+				}
+				start = startHourStr + startMinStr;
+				end = endHourStr + endMinStr;
 				
 				String[] dateArr = date.split("/");
 				int year = Integer.parseInt(dateArr[2]);
 				int day = Integer.parseInt(dateArr[1]);
 				int month = Integer.parseInt(dateArr[0]);
-//				System.out.println(day);
-//				System.out.println(month);
                 Event eventNew = new Event(title, year, month, day, start, end);
                 boolean conflict = false;
-                if(eventNew.getEnd().before(eventNew.getStart()) || eventNew.getStart().equals(eventNew.getEnd())) {
+                if (((startHour >= 0 && startHour <= 24) == false
+                		|| (endHour >= 0 && endHour <= 24) == false
+                		|| (startMin >= 0 && startMin <= 59) == false
+                		|| (endMin >= 0 && endMin <= 59) == false)
+                		&& dialogOpened == false) {
                 	JOptionPane.showMessageDialog(frame,
-                            "The end time cannot be before the start time.",
+                            "Please enter a time in 12-hour format (HH:MMam/pm).",
+                            "Invalid input",
+                            JOptionPane.WARNING_MESSAGE);
+                	dialogOpened = true;
+                }
+                else if ((eventNew.getEnd().before(eventNew.getStart())
+                		|| eventNew.getStart().equals(eventNew.getEnd()))
+                		&& dialogOpened == false) {
+                	JOptionPane.showMessageDialog(frame,
+                            "The end time cannot come before the start time.",
                             "Time Conflict",
                             JOptionPane.WARNING_MESSAGE);
                         conflict = true;
+                        dialogOpened = true;
                 }
-                
-                for(Event events: model.getEvents()) {
-                	if(events.compareTo(eventNew) == 0) {
+                for (Event events: model.getEvents()) {
+                	if(events.compareTo(eventNew) == 0 && dialogOpened == false) {
                 		JOptionPane.showMessageDialog(frame,
-                                "Times cannot overlap. Please ensure that start time is different from end time",
+                                "Event times cannot overlap. Please check your existing events.",
                                 "Time Conflict",
                                 JOptionPane.WARNING_MESSAGE);
                             conflict = true;
+                            dialogOpened = true;
                             break;
                 	}
                 }
-                
                 if(!conflict) {
                 	model.addEvent(eventNew);
+                	frame.dispose();
                 }
                 conflict = false;
-                frame.dispose();
+                dialogOpened = false;
 			}
 		});
 		

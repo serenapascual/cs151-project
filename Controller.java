@@ -12,32 +12,42 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Himanshu Mehta, Serena Pascual and Cherie Sew
+ *
+ */
 public class Controller extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Controller part of MVC for calendar program 
+	 * @param model - MVC model for list of events
+	 */
 	public Controller(final EventModel model){
 		setBackground(Color.white);
 		setLayout(new BorderLayout());
 
-		JPanel upper = new JPanel();
+		final JPanel upper = new JPanel();
 		//	JPanel lower = new JPanel();
 		upper.setBackground(Color.white);
 		//	lower.setBackground(Color.white);
 
-		JButton today = new JButton("TODAY");
-		JButton create = new JButton("CREATE");
-		JButton previous = new JButton("<");
-		JButton next = new JButton(">");
+		final JButton today = new JButton("TODAY");
+		final JButton create = new JButton("CREATE");
+		final JButton previous = new JButton("<");
+		final JButton next = new JButton(">");
 		//		JButton previousMonth = new JButton("<<");
 		//		JButton nextMonth = new JButton(">>");
-		JButton quit = new JButton("QUIT");
-		JButton load = new JButton("LOAD EVENTS FROM FILE");
-		JButton day = new JButton("DAY");
-		JButton week = new JButton("WEEK");
-		JButton month = new JButton("MONTH");
-		JButton agenda = new JButton("AGENDA");
-		Calendar cal = Calendar.getInstance();
+		final JButton quit = new JButton("QUIT");
+		final JButton load = new JButton("LOAD EVENTS FROM FILE");
+		final JButton day = new JButton("DAY");
+		final JButton week = new JButton("WEEK");
+		final JButton month = new JButton("MONTH");
+		final JButton agenda = new JButton("AGENDA");
+		final JButton currentTime = new JButton("CURRENT TIME");
+		final Calendar cal = Calendar.getInstance();
 
 		today.setOpaque(true);
 		today.setBorderPainted(false); // makes color bg show properly on Mac
@@ -48,8 +58,6 @@ public class Controller extends JPanel{
 		today.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Calendar cal = new GregorianCalendar();
-				//				System.out.println(cal.get(Calendar.DATE));
-				//				System.out.println(cal.get(Calendar.DAY_OF_MONTH));
 				model.setToday(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
 			}
 		});
@@ -165,6 +173,7 @@ public class Controller extends JPanel{
 		day.setFont(new Font("Tahoma", Font.BOLD, 14));
 		day.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.DAY);
 				model.getView().drawDayEvents();
 			}
 		});
@@ -177,6 +186,7 @@ public class Controller extends JPanel{
 		week.setFont(new Font("Tahoma", Font.BOLD, 14));
 		week.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.WEEK);
 				model.getView().drawWeekEvents();
 			}
 		});
@@ -189,6 +199,7 @@ public class Controller extends JPanel{
 		month.setFont(new Font("Tahoma", Font.BOLD, 14));
 		month.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setViewType(EventModel.ViewTypes.MONTH);
 				model.getView().drawMonthEvents();
 			}
 		});
@@ -204,6 +215,20 @@ public class Controller extends JPanel{
 				AgendaPromptView view = new AgendaPromptView(model);
 			}
 		});
+		
+		currentTime.setOpaque(true);
+		currentTime.setBorderPainted(false);
+		currentTime.setFocusable(false);
+		currentTime.setBackground(new Color(48, 48, 48));
+		currentTime.setForeground(Color.WHITE);
+		currentTime.setFont(new Font("Tahoma", Font.BOLD, 14));
+		currentTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TimePromptView view = new TimePromptView();
+				
+			}
+		});
+		
 
 		upper.add(today);
 		//		upper.add(previousMonth);
@@ -220,6 +245,7 @@ public class Controller extends JPanel{
 		upper.add(week);
 		upper.add(month);
 		upper.add(agenda);
+		upper.add(currentTime);
 		
 		upper.add(quit);
 		upper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -228,4 +254,3 @@ public class Controller extends JPanel{
 		//	add(lower, BorderLayout.SOUTH);
 	}
 }
-
